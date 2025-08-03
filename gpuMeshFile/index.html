@@ -68,7 +68,7 @@
         scene.add(plane);
 
         const loader = new THREE.OBJLoader();
-        loader.load('https://github.com/fenfics/computer_graphic/model.obj', function (object) {
+        loader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/model.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
@@ -83,7 +83,7 @@
             console.error('Error loading OBJ:', error);
         });
 
-        loader.load('https://github.com/fenfics/computer_graphic/chair.obj', function (object) {
+        loader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/chair.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
