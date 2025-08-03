@@ -70,6 +70,7 @@
         const loader = new THREE.OBJLoader();
         loader.load('https://sibsansuk.github.io/myModel.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
+            object.position.set(1, 1, 1);
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
                 if (child.isMesh) {
