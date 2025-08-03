@@ -3,27 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Graphic</title>
+    <title>โปรเจกต์ของฉัน</title>
+
     <style>
+        /* กำหนดรูปแบบให้ body ทั้งหน้า */
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* เปลี่ยนฟอนต์ */
+            background-color: #FFC0CB; /* สีพื้นหลัง */
+            color: #191970; /* สีตัวอักษร */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
+
+        /* ตกแต่งส่วนหัว (Heading) */
+        h1 {
+            color: #0056b3; /* สีของหัวข้อ */
+            font-size: 3em; /* ขนาดตัวอักษร */
+            margin-bottom: 10px;
+        }
+
+        /* ตกแต่งส่วนคำอธิบาย (Paragraph) */
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* ตกแต่งรายการโปรเจกต์ทั้งหมด */
         .project-list {
             list-style: none;
             padding: 0;
+            width: 80%;
+            max-width: 600px;
         }
+
+        /* ตกแต่งแต่ละรายการ (Item) */
         .project-item {
-            margin: 20px 0;
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            border-radius: 8px; /* ทำให้มุมโค้งมน */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+
+        /* Effect เมื่อนำเมาส์ไปชี้ */
+        .project-item:hover {
+            transform: translateY(-5px); /* เลื่อนขึ้นเล็กน้อย */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ตกแต่งลิงก์ */
         .project-item a {
-            font-size: 24px;
+            display: block;
+            padding: 25px;
+            font-size: 1.5em;
             text-decoration: none;
             color: #0366d6;
+            font-weight: bold;
         }
+
+        /* Effect เมื่อนำเมาส์ไปชี้ที่ลิงก์ */
         .project-item a:hover {
-            text-decoration: underline;
+            color: #0056b3;
         }
     </style>
 </head>
