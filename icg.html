@@ -1,0 +1,29 @@
+<html>
+   <head>
+        <style>
+            canvas{
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        </style>
+   </head>
+<body>
+    <canvas id="canvas" width="200" height="200"></canvas>
+
+
+     <script> const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        function plotPixel(x,y,color){
+            ctx.fillStyle = color;
+            ctx.fillRect(x,y,1,1);
+        }
+        for(let x = 0 ; x < 100 ; x++){
+            let y = 0.001*x*x*x;
+
+            plotPixel(x,y,'red');
+        }
+    </script>
+
+</body>
+</html>

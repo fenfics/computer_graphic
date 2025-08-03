@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>putPixel Demo</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 1px solid black;
+            image-rendering: pixelated;
+            scale: 3;
+            /* ขยายขนาด canvas */
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="200" height="200"></canvas>
+    <script>
+
+      const spaceInvaderSprite = [
+        [0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1],
+        [0,1,1,0,0,0,0,1,1,1,0,0,0,0,1,1],
+        [0,1,1,0,0,0,1,1,1,1,1,1,0,0,1,1],
+        [0,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1],
+        [0,1,1,0,1,0,0,0,0,0,0,0,1,0,1,1],
+        [0,1,1,0,1,0,0,0,0,0,0,0,1,0,1,1],
+        [0,1,1,0,1,0,0,0,0,0,0,0,1,0,1,1],
+        [0,1,1,1,1,0,0,1,1,0,0,1,1,1,1,0],
+        [1,0,1,1,0,1,1,0,0,1,1,0,1,1,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+        [0,0,0,1,1,1,1,0,0,1,1,1,1,0,0,0],
+        [0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0],
+        ];
+    
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // เตรียม buffer ขนาดเท่า canvas
+        const imageData = ctx.createImageData(canvas.width, canvas.height);
+        const data = imageData.data;
+
+        // ฟังก์ชัน putPixel
+        function putPixel(x, y, r, g, b, a) {
+            x=Math.round(x);
+            y=Math.round(y);// แปลงพิกัดให้เป็นพิกเซลใน buffer
+            const index = ((-y + canvas.height / 2) * canvas.width + (x + canvas.width / 2)) * 4; //พิกัดเเริ่มต้นกลางภาพ
+            data[index] = r;     // Red
+            data[index + 1] = g; // Green
+            data[index + 2] = b; // Blue
+            data[index + 3] = a; // Alpha
+        }
+        function drawLine(x1, y1, x2, y2, r, g, b, a) {
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const steps = Math.max(Math.abs(dx), Math.abs(dy));
+            const xIncrement = dx / steps;
+            const yIncrement = dy / steps;
+
+            let x = x1;
+            let y = y1;
+
+            for (let i = 0; i <= steps; i++) {
+                putPixel(Math.round(x), Math.round(y), r, g, b, a);
+                x += xIncrement;
+                y += yIncrement;
+            }
+        }
+        
+        function drawSprite(x, y, sprite, r, g, b, a, degree, scale=0.5) {
+            for (let row = 0; row < sprite.length; row++) {
+                for (let col = 0; col < sprite[row].length; col++) {
+                    if (sprite[row][col] === 1) { // ถ้าเป็นพิกเซลที่ต้องวาด
+                        let cX = col - (sprite[row].length / 2); // คำนวณพิกัด x relative to sprite center
+                        let cY = row - (sprite.length / 2); // คำนวณพิกัด y relative to sprite center
+
+                        const rad = degree * Math.PI / 180;
+                        // หมุนรอบจุดศูนย์กลางของ sprite
+                        const x_rot = cX * Math.cos(rad) - cY * Math.sin(rad);
+                        const y_rot = cX * Math.sin(rad) + cY * Math.cos(rad);
+
+                        const x_scaled = x_rot * scale; // ขยายขนาด
+                        const y_scaled = y_rot * scale; // ขยายขนาด
+                    
+                        putPixel(x + x_scaled, y - y_scaled, r, g, b, a); // วาดพิกเซล
+                    }
+                }
+            }
+        }
+
+        // ฟังก์ชันสำหรับล้าง canvas
+        // ล้าง buffer โดยการเติมสีดำ
+        function clearCanvas() {
+            data.fill(0); // ล้าง buffer ด้วยสีดำ
+        }
+
+        let objX = 0; // ตำแหน่งเริ่มต้นที่จุดศูนย์กลาง
+        let objY = 0;
+        let translationX = 0; // การแปลในแนวนอน
+        let translationY = 0; // การแปลในแนวตั้ง
+        let spriteRotation = 0; // มุมการหมุนของ sprite
+        let orbitDegree = 0; // มุมการหมุนรอบ origin (ปิดการใช้งาน)
+        let scale = 1; // สเกล
+        let degree = 0; // ค่า degree ที่เพิ่มขึ้นทุกครั้งที่ขยับยาน
+
+        // ตัวแปรสำหรับเก็บสถานะปุ่มกด
+        let keys = {
+            w: false,
+            s: false,
+            a: false,
+            d: false,
+            q: false,
+            e: false,
+            z: false,
+            x: false
+        };
+
+        window.addEventListener('keydown', (event) => {
+            switch (event.key.toLowerCase()) {
+                case 'w':
+                    keys.w = true;
+                    break;
+                case 's':
+                    keys.s = true;
+                    break;
+                case 'a':
+                    keys.a = true;
+                    break;
+                case 'd':
+                    keys.d = true;
+                    break;
+                case 'q':
+                    keys.q = true;
+                    break;
+                case 'e':
+                    keys.e = true;
+                    break;
+                case 'z':
+                    keys.z = true;
+                    break;
+                case 'x':
+                    keys.x = true;
+                    break;
+            }
+        });
+
+        window.addEventListener('keyup', (event) => {
+            switch (event.key.toLowerCase()) {
+                case 'w':
+                    keys.w = false;
+                    break;
+                case 's':
+                    keys.s = false;
+                    break;
+                case 'a':
+                    keys.a = false;
+                    break;
+                case 'd':
+                    keys.d = false;
+                    break;
+                case 'q':
+                    keys.q = false;
+                    break;
+                case 'e':
+                    keys.e = false;
+                    break;
+                case 'z':
+                    keys.z = false;
+                    break;
+                case 'x':
+                    keys.x = false;
+                    break;
+            }
+        });
+
+        function animate() {
+            clearCanvas();
+            drawLine(0, 0, 90, 0, 0, 0, 0, 255); // เส้นแนวนอน
+            drawLine(90, 0, 85, -5, 0, 0, 0, 255); // ลูกศร
+            drawLine(90, 0, 85, 5, 0, 0, 0, 255); // ลูกศร
+
+            drawLine(0, 0, 0, 90, 0, 0, 0, 255); // เส้นแนวตั้ง
+            drawLine(0, 90, -5, 85, 0, 0, 0, 255); // ลูกศร
+            drawLine(0, 90, 5, 85, 0, 0, 0, 255); // ลูกศร
+
+            // คำนวณการเคลื่อนที่ตามทิศทางที่ยานหันหน้าไป
+            const moveSpeed = 1;
+            const rotSpeed = 2;
+            const scaleSpeed = 0.02;
+
+            // การหมุน
+            if (keys.q) {
+                spriteRotation -= rotSpeed;
+            }
+            if (keys.e) {
+                spriteRotation += rotSpeed;
+            }
+
+            // การย่อขยาย
+            if (keys.z) {
+                scale += scaleSpeed;
+            }
+            if (keys.x) {
+                scale -= scaleSpeed;
+                if (scale < 0.1) scale = 0.1; // จำกัดขนาดต่ำสุด
+            }
+
+            // การเคลื่อนที่ตามทิศทางที่ยานหันหน้าไป
+            const rad = spriteRotation * Math.PI / 180;
+            let isMoving = false; // ตัวแปรเช็คว่ายานเคลื่อนที่หรือไม่
+            
+            if (keys.d) { // เดินหน้า
+                objX += Math.cos(rad) * moveSpeed;
+                objY += Math.sin(rad) * moveSpeed;
+                isMoving = true;
+            }
+            if (keys.a) { // ถอยหลัง
+                objX -= Math.cos(rad) * moveSpeed;
+                objY -= Math.sin(rad) * moveSpeed;
+                isMoving = true;
+            }
+            if (keys.w) { // เดินซ้าย (strafe)
+                objX -= Math.sin(rad) * moveSpeed;
+                objY += Math.cos(rad) * moveSpeed;
+                isMoving = true;
+            }
+            if (keys.s) { // เดินขวา (strafe)
+                objX += Math.sin(rad) * moveSpeed;
+                objY -= Math.cos(rad) * moveSpeed;
+                isMoving = true;
+            }
+
+            // เพิ่มค่า degree เมื่อมีการขยับยาน
+            if (isMoving) {
+                degree += 1;
+            }
+
+            // วาด sprite
+            drawSprite(objX, objY, spaceInvaderSprite, 200, 100, 0, 255, spriteRotation, scale);
+            
+            // แสดงข้อมูลสถานะ
+            drawText(`Degree: ${degree}`, objX, objY + 30, 0, 0, 0, 255);
+            drawText(`X: ${objX.toFixed(1)} Y: ${objY.toFixed(1)}`, objX, objY + 45, 0, 0, 0, 255);
+            drawText(`Rotation: ${spriteRotation.toFixed(1)}° Scale: ${scale.toFixed(2)}`, objX, objY + 60, 0, 0, 0, 255);
+
+            ctx.putImageData(imageData, 0, 0);
+            requestAnimationFrame(animate);
+        }
+
+        function drawText(text, x, y, r, g, b, a) {
+            const fontSize = 12;
+            ctx.font = `${fontSize}px Arial`;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+            ctx.fillText(text, x + canvas.width / 2, -y + canvas.height / 2 + fontSize / 2); // ปรับตำแหน่งให้ตรงกลาง
+        }
+
+        animate();
+        // จุดเดิม
+
+        // วาด buffer กลับไปที่ canvas
+        ctx.putImageData(imageData, 0, 0);
+    </script>
+</body>
+
+</html>
