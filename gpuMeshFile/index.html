@@ -68,7 +68,7 @@
         scene.add(plane);
 
         const loader = new THREE.OBJLoader();
-        loader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/model.obj', function (object) {
+        loader.load('https://sibsansuk.github.io/myModel.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
