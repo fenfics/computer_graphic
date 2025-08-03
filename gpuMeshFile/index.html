@@ -68,7 +68,7 @@
         scene.add(plane);
 
         const loader = new THREE.OBJLoader();
-        loader.load('https://sibsansuk.github.io/myModel.obj', function (object) {
+        loader.load('https://github.com/fenfics/computer_graphic/model.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
@@ -82,6 +82,22 @@
         }, undefined, function (error) {
             console.error('Error loading OBJ:', error);
         });
+
+        loader.load('https://github.com/fenfics/computer_graphic/chair.obj', function (object) {
+            object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
+            // ตั้งค่า castShadow กับทุก mesh ใน object
+            object.traverse(function (child) {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = false;
+                    child.material.side = THREE.DoubleSide;
+                }
+            });
+            scene.add(object);
+        }, undefined, function (error) {
+            console.error('Error loading OBJ:', error);
+        });
+        
 
 
         // ✅ render loop
