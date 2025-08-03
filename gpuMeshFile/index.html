@@ -70,7 +70,7 @@
         const loader = new THREE.OBJLoader();
         loader.load('https://sibsansuk.github.io/myModel.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
-            object.position.set(1, 1, 0);
+            object.position.set(1, 0, 0);
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
                 if (child.isMesh) {
@@ -86,6 +86,7 @@
 
         loader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/chair.obj', function (object) {
             object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
+            object.position.set(0,0,0);
             // ตั้งค่า castShadow กับทุก mesh ใน object
             object.traverse(function (child) {
                 if (child.isMesh) {
