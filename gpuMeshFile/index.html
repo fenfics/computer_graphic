@@ -1,120 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 
 <head>
-    <title>GPU Shadow</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Graphics</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
+        /* กำหนดรูปแบบให้ body ทั้งหน้า */
         body {
+            font-family: 'Kanit', sans-serif;
+            /* เปลี่ยนฟอนต์ */
+            background-color: #FFC0CB;
+            /* สีพื้นหลัง */
+            color: #191970;
+            /* สีตัวอักษร */
             margin: 0;
-            overflow: hidden;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-style: inherit;
+        }
+
+        /* ตกแต่งส่วนหัว (Heading) */
+        h1 {
+            color: #0056b3;
+            /* สีของหัวข้อ */
+            font-size: 3em;
+            /* ขนาดตัวอักษร */
+            margin-bottom: 10px;
+        }
+
+        /* ตกแต่งส่วนคำอธิบาย (Paragraph) */
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* ตกแต่งรายการโปรเจกต์ทั้งหมด */
+        .project-list {
+            list-style: none;
+            padding: 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* ตกแต่งแต่ละรายการ (Item) */
+        .project-item {
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            /* ทำให้มุมโค้งมน */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* เพิ่มเงา */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* Effect เมื่อนำเมาส์ไปชี้ */
+        .project-item:hover {
+            transform: translateY(-5px);
+            /* เลื่อนขึ้นเล็กน้อย */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ตกแต่งลิงก์ */
+        .project-item a {
+            display: block;
+            padding: 25px;
+            font-size: 1.5em;
+            text-decoration: none;
+            color: #0366d6;
+            font-weight: bold;
+        }
+
+        /* Effect เมื่อนำเมาส์ไปชี้ที่ลิงก์ */
+        .project-item a:hover {
+            color: #0056b3;
         }
     </style>
 </head>
 
 <body>
-    <!-- core three.js -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
-    <script>
+    <h1>My Computer Graphic Works</h1>
 
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // ✅ เปิดใช้งานเงา!
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    <ul class="project-list">
+        <li class="project-item">
+            <a href="gputransformation/index.html">GPUtransformation</a>
+        </li>
+        <li class="project-item">
+            <a href="GPU_Mesh/index.html">GPU_Mesh</a>
+        </li>
+        <li class="project-item">
+            <a href="gpuMeshFile/index.html">gpuMeshFile</a>
+        </li>
 
-        document.body.appendChild(renderer.domElement);
+    </ul>
 
-        const scene = new THREE.Scene();
-
-        // ✅ กล้อง
-        const camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
-        camera.position.set(0, 2, 5);
-        camera.lookAt(0, 0, 0);
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-        // ✅ Directional Light ที่สร้างเงา
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(5, 10, 5);
-        light.castShadow = true;
-        light.shadow.mapSize.width = 1024;
-        light.shadow.mapSize.height = 1024;
-        light.shadow.camera.near = 0.5;
-        light.shadow.camera.far = 50;
-
-        scene.add(light);
-
-
-
-        // ✅ Ambient Light เล็กน้อยให้สว่างรวม
-        const ambient = new THREE.AmbientLight(0x404040);
-        scene.add(ambient);
-
-
-
-        // ✅ พื้น
-        const planeGeometry = new THREE.PlaneGeometry(10, 10);
-        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.rotation.x = -Math.PI / 2; // หมุนให้เป็นพื้น
-        plane.position.y = 0;
-        plane.receiveShadow = true; // ✅ พื้นรับเงา
-        scene.add(plane);
-
-        const loader = new THREE.OBJLoader();
-        loader.load('https://sibsansuk.github.io/myModel.obj', function (object) {
-            object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
-            object.position.set(1, 0, 0);
-            // ตั้งค่า castShadow กับทุก mesh ใน object
-            object.traverse(function (child) {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = false;
-                    child.material.side = THREE.DoubleSide;
-                }
-            });
-            scene.add(object);
-        }, undefined, function (error) {
-            console.error('Error loading OBJ:', error);
-        });
-
-        loader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/chair.obj', function (object) {
-            object.castShadow = true; // ✅ วัตถุนี้สร้างเงา
-            object.position.set(0,0,0);
-            // ตั้งค่า castShadow กับทุก mesh ใน object
-            object.traverse(function (child) {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = false;
-                    child.material.side = THREE.DoubleSide;
-                }
-            });
-            scene.add(object);
-        }, undefined, function (error) {
-            console.error('Error loading OBJ:', error);
-        });
-        
-
-
-        // ✅ render loop
-        function animate(t) {
-
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-        animate(0);
-
-        window.addEventListener('keydown', (event) => {
-
-        });
-
-    </script>
 </body>
 
 </html>
