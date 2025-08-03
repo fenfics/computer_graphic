@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computer Graphics</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* กำหนดรูปแบบให้ body ทั้งหน้า */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* เปลี่ยนฟอนต์ */
-            background-color: #FFC0CB; /* สีพื้นหลัง */
-            color: #191970; /* สีตัวอักษร */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* เปลี่ยนฟอนต์ */
+            background-color: #FFC0CB;
+            /* สีพื้นหลัง */
+            color: #191970;
+            /* สีตัวอักษร */
             margin: 0;
             padding: 20px;
             display: flex;
@@ -22,8 +29,10 @@
 
         /* ตกแต่งส่วนหัว (Heading) */
         h1 {
-            color: #0056b3; /* สีของหัวข้อ */
-            font-size: 3em; /* ขนาดตัวอักษร */
+            color: #0056b3;
+            /* สีของหัวข้อ */
+            font-size: 3em;
+            /* ขนาดตัวอักษร */
             margin-bottom: 10px;
         }
 
@@ -45,14 +54,17 @@
         .project-item {
             background-color: #ffffff;
             margin-bottom: 20px;
-            border-radius: 8px; /* ทำให้มุมโค้งมน */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+            border-radius: 8px;
+            /* ทำให้มุมโค้งมน */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* เพิ่มเงา */
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         /* Effect เมื่อนำเมาส์ไปชี้ */
         .project-item:hover {
-            transform: translateY(-5px); /* เลื่อนขึ้นเล็กน้อย */
+            transform: translateY(-5px);
+            /* เลื่อนขึ้นเล็กน้อย */
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
@@ -72,10 +84,11 @@
         }
     </style>
 </head>
+
 <body>
 
-    <h1>My work</h1>
-  
+    <h1>My Computer Graphic Works</h1>
+
     <ul class="project-list">
         <li class="project-item">
             <a href="gputransformation/index.html">GPUtransformation</a>
@@ -86,8 +99,9 @@
         <li class="project-item">
             <a href="gpuMeshFile/index.html">gpuMeshFile</a>
         </li>
-       
+
     </ul>
 
 </body>
+
 </html>
