@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <title>PBR Model with Textured Floor</title>
     <style>
@@ -28,10 +29,10 @@
 
 <body>
     <div id="loading">Loading model and textures...</div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
 
     <script>
         // --- ส่วนที่ 1: การตั้งค่าพื้นฐานของ Scene ---
@@ -54,17 +55,26 @@
         const texLoader = new THREE.TextureLoader();
 
         // โหลดรูปภาพสำหรับพื้น
-        const floorTexture = texLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/sandstone_blocks_08_diff_1k.jpg");
-        floorTexture.wrapS = THREE.RepeatWrapping;
-        floorTexture.wrapT = THREE.RepeatWrapping;
-        floorTexture.repeat.set(4, 4); 
+        const floorDiff = texLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/sandstone_blocks_08_diff_1k.jpg");
+        const floorRough = texLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/sandstone_blocks_08_diff_1k.jpg"); // ใช้ channel สีแดงสำหรับ Roughness
+        const floorNormal = texLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/sandstone_blocks_08_diff_1k.jpg");
+
+        floorDiff.wrapS = floorDiff.wrapT = THREE.RepeatWrapping;
+        floorRough.wrapS = floorRough.wrapT = THREE.RepeatWrapping;
+        floorNormal.wrapS = floorNormal.wrapT = THREE.RepeatWrapping;
+
+        floorDiff.repeat.set(4, 4);
+        floorRough.repeat.set(4, 4);
+        floorNormal.repeat.set(4, 4);
 
         // สร้าง Material และ Plane สำหรับพื้น
         const planeGeo = new THREE.PlaneGeometry(20, 20);
         const planeMat = new THREE.MeshStandardMaterial({
-            map: floorTexture,
+            map: floorDiff,
+            roughnessMap: floorRough, // เพิ่ม roughness map
+            normalMap: floorNormal, // เพิ่ม normal map
+            metalness: 0.5,
             roughness: 0.8,
-            metalness: 0.2
         });
         const plane = new THREE.Mesh(planeGeo, planeMat);
         plane.rotation.x = -Math.PI / 2;
@@ -84,7 +94,6 @@
         dirLight.shadow.mapSize.height = 2048;
         scene.add(dirLight);
 
-
         const ambient = new THREE.AmbientLight(0xffffff, 0.3);
         scene.add(ambient);
 
@@ -95,8 +104,8 @@
         const chaMat = new THREE.MeshPhysicalMaterial({
             map: chaBase,
             roughnessMap: chaRough,
-            roughness: 0.8,
-            metalness: 0.0,
+            metalness: 0.5,
+            roughness: 0.5,
         });
 
         const clothesBase = texLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_BaseColor.png");
@@ -105,7 +114,6 @@
         const clothesMat = new THREE.MeshPhysicalMaterial({
             map: clothesBase,
             roughnessMap: clothesRough,
-            roughness: 0.9,
             metalness: 0.0,
         });
 
@@ -154,7 +162,7 @@
                     }
                 });
                 object.scale.set(0.9, 0.9, 0.9);
-                object.position.set(0, -2.13, 0); // ตั้งค่าตำแหน่งให้โมเดลยืนบนพื้น
+                object.position.set(0, -2.13, 0);
                 scene.add(object);
                 document.getElementById('loading').style.display = 'none';
             },
