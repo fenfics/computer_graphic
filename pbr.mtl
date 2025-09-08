@@ -1,50 +1,35 @@
-# Blender 4.4.3 MTL File: 'None'
-# www.blender.org
-
-newmtl Cha
+newmtl Cha.001
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 illum 2
-map_Kd girly-pop-cat-with-umbrella/source/Texture/Cha_BaseColor.png
-map_Ns girly-pop-cat-with-umbrella/source/Texture/Cha_Roughness.png
-map_refl girly-pop-cat-with-umbrella/source/Texture/Cha_Metallic.png
-map_d girly-pop-cat-with-umbrella/source/Texture/Cha_Alpha.png
-map_Bump -bm 1.000000 girly-pop-cat-with-umbrella/source/Texture/Cha_Normal.png
+map_Kd https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_BaseColor.png
+map_Ns https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_Roughness.png
+map_refl https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_Metallic.png
+map_d https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_Alpha.png
+map_Bump -bm 1.000000 https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_Normal.png
 
-newmtl Payung
+newmtl Payung.002
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 illum 2
-map_Kd girly-pop-cat-with-umbrella/source/Texture/Payung_BaseColor.png
-map_Ns girly-pop-cat-with-umbrella/source/Texture/Payung_Roughness.png
-map_refl girly-pop-cat-with-umbrella/source/Texture/Payung_Metallic.png
-map_d girly-pop-cat-with-umbrella/source/Texture/Payung_Alpha.png
-map_Bump -bm 1.000000 girly-pop-cat-with-umbrella/source/Texture/Payung_Normal.png
+map_Kd https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_BaseColor.png
+map_Ns https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_Roughness.png
+map_refl https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_Metallic.png
+map_d https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_Alpha.png
+map_Bump -bm 1.000000 https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_Normal.png
 
-newmtl Payung.001
+newmtl Clothes.001
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 illum 2
-map_Kd girly-pop-cat-with-umbrella/source/Texture/Payung_BaseColor.png
-map_Ns girly-pop-cat-with-umbrella/source/Texture/Payung_Roughness.png
-map_refl girly-pop-cat-with-umbrella/source/Texture/Payung_Metallic.png
-map_d girly-pop-cat-with-umbrella/source/Texture/Payung_Alpha.png
-map_Bump -bm 1.000000 girly-pop-cat-with-umbrella/source/Texture/Payung_Normal.png
-
-newmtl clothes
-Ka 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-illum 2
-map_Kd girly-pop-cat-with-umbrella/source/Texture/clothes_BaseColor.png
-map_Ns girly-pop-cat-with-umbrella/source/Texture/clothes_Roughness.png
-map_refl girly-pop-cat-with-umbrella/source/Texture/clothes_Metallic.png
-map_d girly-pop-cat-with-umbrella/source/Texture/clothes_Alpha.png
-map_Bump -bm 1.000000 girly-pop-cat-with-umbrella/source/Texture/clothes_Normal.png
+map_Kd https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_BaseColor.png
+map_Ns https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_Roughness.png
+map_refl https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_Metallic.png
+map_d https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_Alpha.png
+map_Bump -bm 1.000000 https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_Normal.png
