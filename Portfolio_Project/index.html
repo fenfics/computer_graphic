@@ -1,380 +1,552 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-<meta charset="utf-8">
-<title>🌳 Naphatsorn Garden - Interactive Portfolio</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { 
-  height: 100%; 
-  overflow: hidden;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
-  cursor: none;
-}
-canvas { display: block; }
+  <meta charset="utf-8">
+  <title>🌳 Naphatsorn Garden - Interactive Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-#crosshair {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-  z-index: 100;
-}
-#crosshair::before,
-#crosshair::after {
-  content: '';
-  position: absolute;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-}
-#crosshair::before {
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  transform: translateY(-50%);
-}
-#crosshair::after {
-  left: 50%;
-  top: 0;
-  height: 100%;
-  width: 2px;
-  transform: translateX(-50%);
-}
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      cursor: none;
+    }
 
-#ui-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10;
-}
 
-#instructions {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.8));
-  padding: 20px 30px;
-  border-radius: 15px;
-  color: white;
-  font-size: 16px;
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 1s ease-out;
-}
-#instructions h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-  text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
-}
-#instructions .controls {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 14px;
-  line-height: 1.8;
-}
-#instructions .key {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+    #crosshair {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 100;
+    }
 
-#minimap {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.8);
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
+    #crosshair::before,
+    #crosshair::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
 
-#stats {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px 20px;
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-family: 'Courier New', monospace;
-}
+    #crosshair::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      transform: translateY(-50%);
+    }
 
-#click-prompt {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.9);
-  padding: 40px 60px;
-  border-radius: 20px;
-  color: white;
-  font-size: 24px;
-  text-align: center;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  pointer-events: auto;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  animation: pulse 2s infinite;
-}
-#click-prompt:hover {
-  background: rgba(20, 20, 20, 0.95);
-  transform: translate(-50%, -50%) scale(1.05);
-  border-color: rgba(100, 200, 255, 0.8);
-}
-#click-prompt.hidden {
-  display: none;
-}
+    #crosshair::after {
+      left: 50%;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      transform: translateX(-50%);
+    }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    #ui-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(100, 200, 255, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(100, 200, 255, 0.6); }
-}
+    #instructions {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.8));
+      padding: 20px 30px;
+      border-radius: 15px;
+      color: white;
+      font-size: 16px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 1s ease-out;
+    }
 
-.project-label {
-  font-size: 36px;
-  font-weight: bold;
-  text-align: center;
-  padding: 25px 35px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(30, 30, 60, 0.85));
-  color: white;
-  border: 4px solid rgba(255, 255, 255, 0.9);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  pointer-events: auto;
-}
-.project-label:hover {
-  background: linear-gradient(135deg, rgba(100, 200, 255, 0.9), rgba(50, 150, 255, 0.9));
-  border-color: white;
-  box-shadow: 0 12px 35px rgba(100, 200, 255, 0.8);
-  transform: scale(1.1) translateY(-5px);
-}
+    #instructions h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+    }
 
-.profile-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  padding: 25px;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 60, 0.9));
-  border-radius: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  pointer-events: auto;
-}
-.profile-card:hover {
-  background: linear-gradient(135deg, rgba(100, 200, 255, 0.95), rgba(50, 150, 255, 0.95));
-  transform: scale(1.05);
-  box-shadow: 0 15px 40px rgba(100, 200, 255, 0.8);
-}
-.profile-image {
-  width: 150px;
-  height: 150px;
-  border-radius: 15px;
-  object-fit: cover;
-  border: 3px solid white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  text-align: center;
-}
-.profile-name {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-.profile-title {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.9);
-  font-style: italic;
-}
-.name-3d-container {
-  margin-top: 10px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
-}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
-</head>
-<body>
-<div id="crosshair"></div>
-<div id="ui-container">
-  <div id="instructions">
-    <h2>🌳 NAPHATSORN GARDEN 🌳</h2>
-    <div class="controls">
-      <span class="key">W A S D</span> เดิน | 
-      <span class="key">MOUSE</span> มองรอบๆ<br>
-      <span class="key">R</span> รีเซ็ตมุมมอง<br>
-      <span class="key">ESC</span> ปลดล็อกเมาส์
-    </div>
-  </div>
-  
-  <canvas id="minimap" width="220" height="220"></canvas>
-  
-  <div id="stats">
-    <div>📍 Position: <span id="pos">0, 0, 0</span></div>
-    <div>👁️ Rotation: <span id="rot">0°</span></div>
-    <div>🎯 Projects: <span id="projects">5</span></div>
-  </div>
-  
-  <div id="click-prompt">
-    🖱️ คลิกเพื่อเริ่มต้นสำรวจ 🌳<br>
-    <span style="font-size: 16px; opacity: 0.8; margin-top: 10px; display: block;">Click to Start</span>
-  </div>
-</div>
+    #instructions .controls {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 14px;
+      line-height: 1.8;
+    }
 
-<script>
-// Scene Setup
-const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x87CEEB, 30, 100);
+    #instructions .key {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
 
-const loader = new THREE.TextureLoader();
-loader.load(
-  'https://raw.githubusercontent.com/fenfics/computer_graphic/main/sunset-city-fethiye-akdag-ridge-view-city-uyluktepe-snow-winter-aegean-background-advertising-vacation-travel-idea-wallpaper.jpg',
-  tex => { scene.background = tex; }
-);
+    #project-menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(20, 20, 40, 0.85));
+      padding: 15px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      pointer-events: auto;
+      max-width: 280px;
+    }
 
-const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 100);
+    #project-menu h3 {
+      color: white;
+      font-size: 18px;
+      margin-bottom: 12px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 8px;
+    }
 
-// Player Setup
-const player = new THREE.Object3D();
-player.position.set(0, 2.5, 8);
-scene.add(player);
+    .menu-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-const cameraPivot = new THREE.Object3D();
-cameraPivot.position.y = 0.6;
-cameraPivot.add(camera);
-player.add(cameraPivot);
+    .menu-item:hover {
+      background: linear-gradient(135deg, rgba(100, 200, 255, 0.8), rgba(50, 150, 255, 0.8));
+      border-color: white;
+      transform: translateX(-5px);
+      box-shadow: 0 4px 15px rgba(100, 200, 255, 0.6);
+    }
 
-// Renderer
-const renderer = new THREE.WebGLRenderer({antialias: true});
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-document.body.appendChild(renderer.domElement);
+    .menu-item-icon {
+      font-size: 20px;
+      min-width: 25px;
+      text-align: center;
+    }
 
-// Label Renderer
-const labelRenderer = new THREE.CSS2DRenderer();
-labelRenderer.setSize(innerWidth, innerHeight);
-labelRenderer.domElement.style.position = 'absolute';
-labelRenderer.domElement.style.top = '0px';
-labelRenderer.domElement.style.pointerEvents = 'auto';
-labelRenderer.domElement.style.zIndex = '1';
-// อนุญาตให้คลิกผ่าน pointer lock
-labelRenderer.domElement.style.cursor = 'pointer';
-document.body.appendChild(labelRenderer.domElement);
+    .menu-item-text {
+      flex: 1;
+    }
 
-// Enhanced Lighting
-scene.add(new THREE.HemisphereLight(0xffffbb, 0x080820, 1.0));
+    .menu-credit {
+      color: #00ffff;
+      font-size: 13px;
+      margin-top: 5px;
+    }
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.3);
-dirLight.position.set(15, 25, 15);
-dirLight.castShadow = true;
-dirLight.shadow.mapSize.width = 2048;
-dirLight.shadow.mapSize.height = 2048;
-dirLight.shadow.camera.near = 0.5;
-dirLight.shadow.camera.far = 100;
-dirLight.shadow.camera.left = -30;
-dirLight.shadow.camera.right = 30;
-dirLight.shadow.camera.top = 30;
-dirLight.shadow.camera.bottom = -30;
-scene.add(dirLight);
+    .menu-credit a {
+      color: #00ffff;
+      text-decoration: underline;
+    }
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    .menu-warning {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 14px;
+    }
 
-// Enhanced Floor
-const floorGeo = new THREE.PlaneGeometry(50, 50);
-const floorMat = new THREE.MeshStandardMaterial({
-  color: 0x8B9467,
-  roughness: 0.8,
-  metalness: 0.2
-});
-const floor = new THREE.Mesh(floorGeo, floorMat);
-floor.rotation.x = -Math.PI/2;
-floor.receiveShadow = true;
-scene.add(floor);
 
-// Grid Helper
-const gridHelper = new THREE.GridHelper(50, 50, 0x444444, 0x222222);
-gridHelper.position.y = 0.01;
-scene.add(gridHelper);
+    #stats {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px 20px;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-family: 'Courier New', monospace;
+    }
 
-// Load Garden
-const gltfLoader = new THREE.GLTFLoader();
-const objLoader = new THREE.OBJLoader();
-const textureLoader = new THREE.TextureLoader();
-let walkableObjects = [];
-let projects = [];
+    #click-prompt {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      padding: 40px 60px;
+      border-radius: 20px;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
 
-gltfLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/garden.glb', gltf => {
-  const model = gltf.scene || gltf.scenes[0];
-  model.traverse(node => {
-    if(node.isMesh) {
-      node.castShadow = true;
-      node.receiveShadow = true;
-      walkableObjects.push(node);
-      if(node.material) {
-        node.material.roughness = 0.7;
-        node.material.metalness = 0.3;
+    #click-prompt:hover {
+      background: rgba(20, 20, 20, 0.95);
+      transform: translate(-50%, -50%) scale(1.05);
+      border-color: rgba(100, 200, 255, 0.8);
+    }
+
+    #click-prompt.hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
-  });
-  scene.add(model);
 
-  const anchors = [
-    {name: "empty_history", label: null, isProfile: true, url: "#"},
-    {name: "empty_2", label: "🔧 Project 2", url: "https://fenfics.github.io/computer_graphic/gputransformation/index.html"},
-    {name: "empty_3", label: "🎯 Project 3", url: "https://fenfics.github.io/computer_graphic/GPU_Mesh/index.html"},
-    {name: "empty_4", label: "🚀 Project 4", url: "https://fenfics.github.io/computer_graphic/gpuMeshFile/index.html"},
-    {name: "empty_5", label: "✨ Project 5", url: "https://fenfics.github.io/computer_graphic/PBR-AHM/index.html"},
-  ];
+    @keyframes pulse {
 
-  anchors.forEach((a, index) => {
-    const obj = model.getObjectByName(a.name);
-    if(!obj) return;
-    
-    let label;
-    
-    if(a.isProfile) {
-      // สร้าง Profile Card สำหรับตำแหน่งที่ 1
-      const div = document.createElement('div');
-      div.className = 'profile-card';
-      div.innerHTML = `
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(100, 200, 255, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(100, 200, 255, 0.6);
+      }
+    }
+
+    .project-label {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      padding: 15px 25px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(30, 30, 60, 0.85));
+      color: white;
+      border: 4px solid rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      pointer-events: auto;
+    }
+
+    .project-label:hover {
+      background: linear-gradient(135deg, rgba(100, 200, 255, 0.9), rgba(50, 150, 255, 0.9));
+      border-color: white;
+      box-shadow: 0 12px 35px rgba(100, 200, 255, 0.8);
+      transform: scale(1.1) translateY(-5px);
+    }
+
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      padding: 25px;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 60, 0.9));
+      border-radius: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .profile-card:hover {
+      background: linear-gradient(135deg, rgba(100, 200, 255, 0.95), rgba(50, 150, 255, 0.95));
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(100, 200, 255, 0.8);
+    }
+
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 15px;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      text-align: center;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .profile-title {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      font-style: italic;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS2DRenderer.js"></script>
+</head>
+
+<body>
+  <div id="crosshair"></div>
+  <div id="ui-container">
+    <div id="instructions">
+      <h2>🌳 NAPHATSORN GARDEN 🌳</h2>
+      <div class="controls">
+        <span class="key">W A S D</span> เดิน |
+        <span class="key">MOUSE</span> มองรอบๆ<br>
+        <span class="key">R</span> รีเซ็ตมุมมอง<br>
+        <span class="key">ESC</span> ปลดล็อกเมาส์
+      </div>
+    </div>
+
+    <canvas id="minimap" width="220" height="220"></canvas>
+
+    <div id="project-menu">
+      <h3>🌟 Projects Menu</h3>
+      <div class="menu-item" data-target="empty_history">🏡 Profile</div>
+      <div class="menu-item" data-target="empty_2">🔧 Project 2</div>
+      <div class="menu-item" data-target="empty_3">🎯 Project 3</div>
+      <div class="menu-item" data-target="empty_4">🚀 Project 4</div>
+      <div class="menu-item" data-target="empty_5">✨ Project 5</div>
+      <div class="menu-item" data-target="empty_6">🎭 Elmo Shader</div>
+      <div class="menu-item" data-target="empty_7">🌿 Shader Demo</div>
+      <div class="menu-item" data-target="empty_8">👩 PBR Character</div>
+      <div class="menu-warning">
+        เมื่อกดที่เมนูบาร์จะไม่สามารถกลับมาเดินต่อได้ ต้อง refresh ใหม่
+      </div>
+      <div class="menu-credit">
+        Model credit: <a href="https://skfb.ly/oIOL9" target="_blank"
+          style="color: #00ffff; text-decoration: underline;">Sketchfab</a>
+      </div>
+    </div>
+
+
+
+    <div id="stats">
+      <div>📍 Position: <span id="pos">0, 0, 0</span></div>
+      <div>👁️ Rotation: <span id="rot">0°</span></div>
+      <div>🎯 Projects: <span id="projects">8</span></div>
+    </div>
+
+    <div id="click-prompt">
+      🖱️ คลิกเพื่อเริ่มต้นสำรวจ 🌳<br>
+      กด esc เพื่อเข้าสู่โหมดเมาส์ และ การ์ดต่างๆ บนหน้าจอสามารถคลิกได้ หลังจากกด esc <br>
+      <span style="font-size: 16px; opacity: 0.8; margin-top: 10px; display: block;">Click to Start</span>
+    </div>
+  </div>
+
+  <script>
+    // Scene Setup
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x87CEEB, 30, 100);
+
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      'https://raw.githubusercontent.com/fenfics/computer_graphic/main/sunset-city-fethiye-akdag-ridge-view-city-uyluktepe-snow-winter-aegean-background-advertising-vacation-travel-idea-wallpaper.jpg',
+      tex => { scene.background = tex; }
+    );
+
+    const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 100);
+
+    // Player Setup
+    const player = new THREE.Object3D();
+    player.position.set(0, 2.5, 8);
+    scene.add(player);
+
+    const cameraPivot = new THREE.Object3D();
+    cameraPivot.position.y = 0.6;
+    cameraPivot.add(camera);
+    player.add(cameraPivot);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    // Label Renderer
+    const labelRenderer = new THREE.CSS2DRenderer();
+    labelRenderer.setSize(innerWidth, innerHeight);
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.pointerEvents = 'auto';
+    labelRenderer.domElement.style.zIndex = '1';
+    labelRenderer.domElement.style.cursor = 'pointer';
+    document.body.appendChild(labelRenderer.domElement);
+
+    // Enhanced Lighting
+    scene.add(new THREE.HemisphereLight(0xffffbb, 0x080820, 1.0));
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    dirLight.position.set(15, 25, 15);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.camera.near = 0.5;
+    dirLight.shadow.camera.far = 100;
+    dirLight.shadow.camera.left = -30;
+    dirLight.shadow.camera.right = 30;
+    dirLight.shadow.camera.top = 30;
+    dirLight.shadow.camera.bottom = -30;
+    scene.add(dirLight);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+
+    // Enhanced Floor
+    const floorGeo = new THREE.PlaneGeometry(50, 50);
+    const floorMat = new THREE.MeshStandardMaterial({
+      color: 0x8B9467,
+      roughness: 0.8,
+      metalness: 0.2
+    });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    // Grid Helper
+    const gridHelper = new THREE.GridHelper(50, 50, 0x444444, 0x222222);
+    gridHelper.position.y = 0.01;
+    scene.add(gridHelper);
+
+    // Load Garden
+    const gltfLoader = new THREE.GLTFLoader();
+    const objLoader = new THREE.OBJLoader();
+    const textureLoader = new THREE.TextureLoader();
+    let walkableObjects = [];
+    let projects = [];
+
+    // Load textures for Elmo
+    const elmoTextures = [
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/3E6635E4_c.png'),
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/3EFB9D32_c.png'),
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/7BAD8BC0_c.png'),
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/623F8D60_c.png'),
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/177BC529_c.png'),
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/1952DE7A_c.png'),
+      textureLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/4521FCFA_c.png')
+    ];
+
+    // Shader for Elmo
+    const elmoVertShader = `
+  uniform float uTime;
+  varying vec3 vNormal;
+  varying vec3 vPosW;
+  varying vec2 vUv;
+  void main() {
+    vNormal = normalize(mat3(modelMatrix) * normal);
+    vUv = uv;
+    vec3 pos = position;
+    vPosW = (modelMatrix * vec4(pos, 1.0)).xyz;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  }
+`;
+
+    const elmoFragShader = `
+  precision mediump float;
+  varying vec3 vNormal;
+  varying vec3 vPosW;
+  varying vec2 vUv;
+  uniform vec3 uLightDir;
+  uniform sampler2D uTex;
+
+  void main() {
+    float diffuse = clamp(dot(vNormal, uLightDir), 0.0, 1.0);
+    float levels = 3.0;
+    diffuse = floor(diffuse * levels) / levels;
+    diffuse += 0.6;
+
+    vec3 R = reflect(-uLightDir, vNormal);
+    vec3 V = normalize(cameraPosition - vPosW);
+    float specular = max(pow(dot(R,V), 4.0), 0.0);
+    specular = smoothstep(0.4, 0.6, specular);
+    if(diffuse <= 0.6) specular = 0.0;
+
+    vec3 base = texture2D(uTex, vUv).rgb;
+    vec3 color = (base * diffuse) + vec3(specular);
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+    gltfLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/garden.glb', gltf => {
+      const model = gltf.scene || gltf.scenes[0];
+      model.traverse(node => {
+        if (node.isMesh) {
+          node.castShadow = true;
+          node.receiveShadow = true;
+          walkableObjects.push(node);
+          if (node.material) {
+            node.material.roughness = 0.7;
+            node.material.metalness = 0.3;
+          }
+        }
+      });
+      scene.add(model);
+
+      const anchors = [
+        { name: "empty_history", label: null, isProfile: true, url: "#" },
+        { name: "empty_2", label: "🔧 Project 2", url: "https://fenfics.github.io/computer_graphic/gputransformation/index.html" },
+        { name: "empty_3", label: "🎯 Project 3", url: "https://fenfics.github.io/computer_graphic/GPU_Mesh/index.html" },
+        { name: "empty_4", label: "🚀 Project 4", url: "https://fenfics.github.io/computer_graphic/gpuMeshFile/index.html" },
+        { name: "empty_5", label: "✨ Project 5", url: "https://fenfics.github.io/computer_graphic/PBR-AHM/index.html" },
+        { name: "empty_6", label: null, isElmo: true, url: "https://fenfics.github.io/computer_graphic/elmo-shader/index.html" },
+        { name: "empty_7", label: null, isShaderDemo: true, url: "#" },
+        { name: "empty_8", label: null, isPBRCharacter: true, url: "#" }
+      ];
+
+      anchors.forEach((a, index) => {
+        const obj = model.getObjectByName(a.name);
+        if (!obj) return;
+
+        let label;
+
+        if (a.isProfile) {
+          // สร้าง Profile Card สำหรับตำแหน่งที่ 1
+          const div = document.createElement('div');
+          div.className = 'profile-card';
+          div.innerHTML = `
         <img src="https://raw.githubusercontent.com/fenfics/computer_graphic/main/IMG_3245.png" 
              alt="Profile" class="profile-image">
         <div class="profile-info">
@@ -382,313 +554,504 @@ gltfLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main
           <div class="profile-title">Computer Graphics Portfolio</div>
         </div>
       `;
-      div.addEventListener('click', () => window.open(a.url, "_blank"));
-      
-      label = new THREE.CSS2DObject(div);
-      label.position.set(0, 2.5, 0);
-      
-      // โหลด OBJ Model ชื่อ
-      objLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/name.obj', 
-        objModel => {
-          objModel.traverse(child => {
-            if(child.isMesh) {
-              child.material = new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-                roughness: 0.3,
-                metalness: 0.7,
-                emissive: 0x4488ff,
-                emissiveIntensity: 0.3
+          div.addEventListener('click', () => window.open(a.url, "_blank"));
+
+          label = new THREE.CSS2DObject(div);
+          label.position.set(0, 2.5, 0);
+
+          // โหลด OBJ Model ชื่อ
+          objLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/name.obj',
+            objModel => {
+              objModel.traverse(child => {
+                if (child.isMesh) {
+                  child.material = new THREE.MeshStandardMaterial({
+                    color: 0x000000,
+                    roughness: 0.3,
+                    metalness: 0.3,
+                    emissive: 0x4488ff,
+                    emissiveIntensity: 0.3
+                  });
+                  child.castShadow = true;
+                  child.receiveShadow = true;
+                }
               });
-              child.castShadow = true;
-              child.receiveShadow = true;
+              objModel.scale.set(0.5, 0.5, 0.5);
+              objModel.position.set(obj.position.x + 2, obj.position.y - 5, obj.position.z);
+              objModel.rotation.y = 84.8;
+              scene.add(objModel);
             }
+          );
+        } else if (a.isElmo) {
+          // สร้าง Label สำหรับ Elmo
+          const div = document.createElement('div');
+          div.className = 'project-label';
+          div.innerHTML = '🎭 Elmo Shader';
+          div.addEventListener('click', () => window.open(a.url, "_blank"));
+
+          label = new THREE.CSS2DObject(div);
+          label.position.set(0, 2.5, 0);
+
+          // โหลด Elmo Model พร้อม Shader
+          objLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/elmo.obj',
+            (elmoObj) => {
+              let texIndex = 0;
+              elmoObj.traverse((child) => {
+                if (child.isMesh) {
+                  const mat = new THREE.ShaderMaterial({
+                    vertexShader: elmoVertShader,
+                    fragmentShader: elmoFragShader,
+                    uniforms: {
+                      uTime: { value: 0.0 },
+                      uLightDir: { value: new THREE.Vector3(0.4, 1, 0.8).normalize() },
+                      uTex: { value: elmoTextures[texIndex % elmoTextures.length] }
+                    }
+                  });
+                  child.material = mat;
+                  child.castShadow = true;
+                  child.receiveShadow = true;
+                  texIndex++;
+                }
+              });
+              elmoObj.scale.set(100, 100, 100);
+              elmoObj.position.copy(obj.position);
+              elmoObj.position.y += 0.5;
+              scene.add(elmoObj);
+              obj.userData.elmoModel = elmoObj;
+            }
+          );
+        } else if (a.isShaderDemo) {
+          // สร้าง Label สำหรับ Shader Demo (Torus)
+          const div = document.createElement('div');
+          div.className = 'project-label';
+          div.innerHTML = '✨ Shader Demo';
+          div.addEventListener('click', () => window.open(a.url, "_blank"));
+
+          label = new THREE.CSS2DObject(div);
+          label.position.set(0, 3, 0);
+
+          // สร้าง Torus ด้วย Shader
+          const torusGeo = new THREE.TorusBufferGeometry(0.7, 0.2, 160, 240);
+          const torusUniforms = {
+            uTime: { value: 0.0 },
+            uLightDir: { value: new THREE.Vector3(0.4, 1.0, 0.8).normalize() }
+          };
+
+          const torusVertShader = `
+            uniform float uTime;
+            varying vec3 vNormal;
+            varying vec3 vPosW;
+            void main(){
+              vNormal = normalize(mat3(modelMatrix) * normal);
+              vec3 pos = position;
+              vPosW = (modelMatrix * vec4(pos, 1.0)).xyz;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            }
+          `;
+
+          const torusFragShader = `
+            precision mediump float;
+            varying vec3 vNormal;
+            uniform vec3 uLightDir;
+            varying vec3 vPosW;
+            void main(){
+              float diffuse = dot(vNormal, uLightDir);   
+              diffuse = clamp(diffuse, 0.3, 1.0);
+              vec3 R = reflect(-uLightDir, vNormal);
+              vec3 V = normalize(cameraPosition - vPosW);
+              float specular = pow(dot(R,V), 8.0);
+              specular = clamp(specular, 0.0, 0.7);
+              if(diffuse <= 0.3) specular = 0.0;
+              gl_FragColor = (vec4(1.0, 1.0, 0.5, 1.0) * diffuse) + vec4(specular);
+            }
+          `;
+
+          const torusMat = new THREE.ShaderMaterial({
+            vertexShader: torusVertShader,
+            fragmentShader: torusFragShader,
+            uniforms: torusUniforms
           });
-          objModel.scale.set(0.5, 0.5, 0.5);
-          objModel.position.set(obj.position.x + 2, obj.position.y + 1, obj.position.z);
-          objModel.rotation.y = Math.PI / 4;
-          scene.add(objModel);
-          
-          // หมุนช้าๆ
-          function animateName() {
-            objModel.rotation.y += 0.01;
-            requestAnimationFrame(animateName);
-          }
-          animateName();
+
+          const torusMesh = new THREE.Mesh(torusGeo, torusMat);
+          torusMesh.scale.set(2.5, 2.5, 2.5);
+          torusMesh.position.copy(obj.position);
+          torusMesh.position.y += 1.5;
+          scene.add(torusMesh);
+
+          obj.userData.torusModel = torusMesh;
+          obj.userData.torusUniforms = torusUniforms;
+        } else if (a.isPBRCharacter) {
+          // สร้าง Label สำหรับ PBR Character
+          const div = document.createElement('div');
+          div.className = 'project-label';
+          div.innerHTML = '👩 PBR Character';
+          div.addEventListener('click', () => window.open(a.url, "_blank"));
+
+          label = new THREE.CSS2DObject(div);
+          label.position.set(0, 3.5, 0);
+
+          // โหลด PBR Character Model
+          const chaBase = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_BaseColor.png");
+          chaBase.encoding = THREE.sRGBEncoding;
+          const chaRough = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/Cha_Roughness.png");
+          const chaMat = new THREE.MeshPhysicalMaterial({
+            map: chaBase,
+            roughnessMap: chaRough,
+            metalness: 0.5,
+            roughness: 0.5,
+          });
+
+          const clothesBase = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_BaseColor.png");
+          clothesBase.encoding = THREE.sRGBEncoding;
+          const clothesRough = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/clothes_Roughness.png");
+          const clothesMat = new THREE.MeshPhysicalMaterial({
+            map: clothesBase,
+            roughnessMap: clothesRough,
+            metalness: 0.0,
+          });
+
+          const payungBase = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_BaseColor.png");
+          payungBase.encoding = THREE.sRGBEncoding;
+          const payungMetal = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_Metallic.png");
+          const payungRough = textureLoader.load("https://raw.githubusercontent.com/fenfics/computer_graphic/main/Payung_Roughness.png");
+          const payungMat = new THREE.MeshPhysicalMaterial({
+            map: payungBase,
+            metalnessMap: payungMetal,
+            roughnessMap: payungRough,
+            metalness: 0.8,
+            roughness: 0.2,
+          });
+
+          const meshMaterials = {
+            "Circle": chaMat, "Circle.001": chaMat, "Circle.002": payungMat, "Plane.003": payungMat,
+            "Circle.003": payungMat, "Circle.004": payungMat, "Circle.005": payungMat,
+            "Circle.006": chaMat, "Circle.007": chaMat, "Circle.009": clothesMat,
+            "Circle.010": payungMat, "Circle.012": clothesMat, "Circle.013": payungMat,
+            "Circle.014": clothesMat, "Circle.017": clothesMat, "Circle.018": clothesMat,
+            "Circle.019": clothesMat, "Circle.020": clothesMat, "Circle.021": clothesMat,
+            "Circle.022": chaMat, "Cube": chaMat, "Cube.001": chaMat, "Cube.002": clothesMat,
+            "Cube.003": clothesMat, "Cube.004": clothesMat, "Cube.005": clothesMat,
+            "NurbsPath": clothesMat, "Plane": chaMat, "Plane.001": chaMat, "Plane.002": chaMat,
+            "Plane.004": clothesMat, "Plane.005": clothesMat, "Plane.006": clothesMat,
+            "Plane.008": clothesMat, "Plane.009": chaMat, "Plane.010": chaMat,
+            "Plane.011": clothesMat, "Plane.012": clothesMat, "Plane.013": clothesMat,
+            "Plane.014": clothesMat, "Plane.015": clothesMat,
+          };
+
+          objLoader.load('https://raw.githubusercontent.com/fenfics/computer_graphic/main/pbr.obj',
+            (pbrObj) => {
+              pbrObj.traverse((child) => {
+                if (child.isMesh) {
+                  child.castShadow = true;
+                  child.receiveShadow = true;
+                  child.material = meshMaterials[child.name] || new THREE.MeshStandardMaterial({
+                    color: 0x888888,
+                    roughness: 0.7,
+                    metalness: 0.3,
+                  });
+                }
+              });
+              pbrObj.scale.set(3, 3, 3);
+              pbrObj.position.copy(obj.position);
+              pbrObj.position.y += 0.5;
+              scene.add(pbrObj);
+              obj.userData.pbrModel = pbrObj;
+            }
+          );
+        } else {
+          const div = document.createElement('div');
+          div.className = 'project-label';
+          div.innerHTML = a.label;
+          div.addEventListener('click', () => window.open(a.url, "_blank"));
+
+          label = new THREE.CSS2DObject(div);
+          label.position.set(0, 2.5, 0);
         }
-      );
-    } else {
-      // สร้าง Label ปกติสำหรับโปรเจคอื่นๆ
-      const div = document.createElement('div');
-      div.className = 'project-label';
-      div.innerHTML = a.label;
-      div.addEventListener('click', () => window.open(a.url, "_blank"));
-      
-      label = new THREE.CSS2DObject(div);
-      label.position.set(0, 2.5, 0);
-    }
-    
-    obj.add(label);
-    
-    projects.push({
-      pos: obj.position.clone(),
-      label: label,
-      url: a.url,
-      element: label.element
+
+        obj.add(label);
+
+        projects.push({
+          pos: obj.position.clone(),
+          label: label,
+          url: a.url,
+          element: label.element
+        });
+      });
+
+      document.getElementById('projects').textContent = projects.length;
+
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const targetName = item.dataset.target;
+          const target = projects.find(p => p.pos && p.label && p.label.parent.name === targetName);
+          if (target) {
+            const focusPos = new THREE.Vector3(target.pos.x, target.pos.y + 2, target.pos.z + 5);
+            smoothMoveCamera(focusPos);
+          }
+        });
+      });
     });
-  });
-  
-  document.getElementById('projects').textContent = projects.length;
-});
 
-// Input Handling
-const keys = {w: false, a: false, s: false, d: false, space: false};
-let isPointerLocked = false;
+    const keys = { w: false, a: false, s: false, d: false, space: false };
+    let isPointerLocked = false;
 
-const clickPrompt = document.getElementById('click-prompt');
+    const clickPrompt = document.getElementById('click-prompt');
 
-function lockPointer() {
-  document.body.requestPointerLock();
-}
-
-clickPrompt.addEventListener('click', lockPointer);
-
-// คลิกที่ไหนก็ได้เพื่อล็อกเมาส์อีกครั้ง
-document.addEventListener('click', (e) => {
-  if(!isPointerLocked && !clickPrompt.classList.contains('hidden')) {
-    return;
-  }
-  if(!isPointerLocked) {
-    lockPointer();
-  }
-});
-
-document.addEventListener('pointerlockchange', () => {
-  isPointerLocked = document.pointerLockElement === document.body;
-  if(isPointerLocked) {
-    clickPrompt.classList.add('hidden');
-  } else {
-    clickPrompt.classList.remove('hidden');
-    clickPrompt.innerHTML = '🖱️ คลิกเพื่อกลับมาเล่นต่อ 🌳<br><span style="font-size: 16px; opacity: 0.8; margin-top: 10px; display: block;">Click to Resume</span>';
-  }
-});
-
-window.addEventListener('keydown', e => {
-  const key = e.key.toLowerCase();
-  if(keys.hasOwnProperty(key)) keys[key] = true;
-  if(key === 'r') { yaw = 0; pitch = 0; }
-});
-
-window.addEventListener('keyup', e => {
-  const key = e.key.toLowerCase();
-  if(keys.hasOwnProperty(key)) keys[key] = false;
-});
-
-// Mouse Look
-let yaw = 0, pitch = 0, yawVel = 0, pitchVel = 0;
-const sensitivity = 0.002, inertia = 0.7;
-
-document.addEventListener('mousemove', e => {
-  if(!isPointerLocked) return;
-  yawVel -= e.movementX * sensitivity;
-  pitchVel -= e.movementY * sensitivity;
-});
-
-// Physics
-let velocity = new THREE.Vector3();
-const playerHeight = 2.5, speed = 8, jumpSpeed = 7, gravity = 12;
-let canJump = false;
-const raycaster = new THREE.Raycaster();
-const down = new THREE.Vector3(0, -1, 0);
-
-// Minimap
-const minimap = document.getElementById("minimap");
-const ctx = minimap.getContext("2d");
-
-function drawMiniMap() {
-  ctx.clearRect(0, 0, minimap.width, minimap.height);
-  
-  // Background
-  ctx.fillStyle = "rgba(20, 30, 40, 0.8)";
-  ctx.fillRect(0, 0, minimap.width, minimap.height);
-  
-  const scale = 4.5;
-  const centerX = minimap.width / 2;
-  const centerY = minimap.height / 2;
-  
-  // Grid
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-  ctx.lineWidth = 1;
-  for(let i = -5; i <= 5; i++) {
-    ctx.beginPath();
-    ctx.moveTo(centerX + i * 20, 0);
-    ctx.lineTo(centerX + i * 20, minimap.height);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, centerY + i * 20);
-    ctx.lineTo(minimap.width, centerY + i * 20);
-    ctx.stroke();
-  }
-  
-  // Projects
-  projects.forEach((p, i) => {
-    const x = centerX + p.pos.x * scale;
-    const y = centerY - p.pos.z * scale;
-    
-    ctx.fillStyle = "rgba(100, 200, 255, 0.8)";
-    ctx.beginPath();
-    ctx.arc(x, y, 8, 0, 2 * Math.PI);
-    ctx.fill();
-    
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    
-    ctx.fillStyle = "white";
-    ctx.font = "bold 12px Tahoma";
-    ctx.textAlign = "center";
-    ctx.fillText(`${i + 1}`, x, y + 4);
-  });
-  
-  // Player
-  const px = centerX + player.position.x * scale;
-  const py = centerY - player.position.z * scale;
-  
-  ctx.save();
-  ctx.translate(px, py);
-  ctx.rotate(-yaw);
-  
-  ctx.fillStyle = "red";
-  ctx.beginPath();
-  ctx.arc(0, 0, 7, 0, 2 * Math.PI);
-  ctx.fill();
-  
-  ctx.fillStyle = "yellow";
-  ctx.beginPath();
-  ctx.moveTo(8, 0);
-  ctx.lineTo(-4, 4);
-  ctx.lineTo(-4, -4);
-  ctx.closePath();
-  ctx.fill();
-  
-  ctx.restore();
-}
-
-// Stats Update
-function updateStats() {
-  const pos = player.position;
-  document.getElementById('pos').textContent = 
-    `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${pos.z.toFixed(1)}`;
-  document.getElementById('rot').textContent = 
-    `${((yaw * 180 / Math.PI) % 360).toFixed(0)}°`;
-}
-
-// Resize Handler
-addEventListener('resize', () => {
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-  labelRenderer.setSize(innerWidth, innerHeight);
-});
-
-// Main Loop
-const clock = new THREE.Clock();
-(function loop() {
-  const delta = Math.min(clock.getDelta(), 0.1);
-
-  // Smooth Mouse Look
-  yaw += yawVel;
-  pitch += pitchVel;
-  pitch = Math.max(-Math.PI / 2 + 0.1, Math.min(Math.PI / 2 - 0.1, pitch));
-  yawVel *= inertia;
-  pitchVel *= inertia;
-  player.rotation.y = yaw;
-  cameraPivot.rotation.x = pitch;
-
-  // Movement
-  const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(player.quaternion);
-  const right = new THREE.Vector3(1, 0, 0).applyQuaternion(player.quaternion);
-  
-  let moveDir = new THREE.Vector3();
-  if(keys.w) moveDir.add(forward);
-  if(keys.s) moveDir.sub(forward);
-  if(keys.d) moveDir.add(right);
-  if(keys.a) moveDir.sub(right);
-  
-  if(moveDir.length() > 0) {
-    moveDir.normalize();
-    player.position.addScaledVector(moveDir, speed * delta);
-  }
-
-  // Jump & Gravity
-  raycaster.set(player.position, down);
-  const intersects = raycaster.intersectObjects(walkableObjects.concat([floor]), true);
-  let onGround = false;
-  
-  if(intersects.length > 0) {
-    const groundY = intersects[0].point.y;
-    if(player.position.y <= groundY + playerHeight + 0.05) {
-      onGround = true;
-      player.position.y = THREE.MathUtils.lerp(player.position.y, groundY + playerHeight, 0.3);
-      velocity.y = 0;
-      canJump = true;
+    function lockPointer() {
+      document.body.requestPointerLock();
     }
-  }
-  
-  if(keys.space && canJump) {
-    velocity.y = jumpSpeed;
-    canJump = false;
-  }
-  
-  if(!onGround) {
-    velocity.y -= gravity * delta;
-    player.position.y += velocity.y * delta;
-  }
 
-  // Label Scaling with Distance และซ่อนที่ผ่านมาแล้ว
-  projects.forEach(p => {
-    if(p.label && p.element) {
-      const dist = player.position.distanceTo(p.pos);
-      
-      // คำนวณทิศทางจากผู้เล่นไปยังโปรเจค
-      const toProject = new THREE.Vector3().subVectors(p.pos, player.position).normalize();
-      const playerForward = new THREE.Vector3(0, 0, -1).applyQuaternion(player.quaternion);
-      const dotProduct = toProject.dot(playerForward);
-      
-      // ถ้า dotProduct < 0 หมายความว่าโปรเจคอยู่ด้านหลัง (ผ่านมาแล้ว)
-      const isBehind = dotProduct < -0.3; // -0.3 ให้มีมุมมองกว้างขึ้นเล็กน้อย
-      
-      if(isBehind) {
-        // ซ่อนโปรเจคที่อยู่ด้านหลัง
-        p.element.style.display = 'none';
-      } else {
-        p.element.style.display = 'block';
-        
-        // ปรับขนาดตามระยะทาง
-        let s;
-        if(dist < 2) s = 2.5;
-        else if(dist < 5) s = 2.0;
-        else if(dist < 10) s = 1.5;
-        else if(dist < 15) s = 1.2;
-        else if(dist < 20) s = 1.0;
-        else if(dist < 30) s = 0.8;
-        else s = 0.6;
-        
-        const opacity = dist > 35 ? 0.4 : (dist > 25 ? 0.7 : 1);
-        
-        p.element.style.transform = `scale(${s})`;
-        p.element.style.opacity = opacity;
+    clickPrompt.addEventListener('click', lockPointer);
+
+    document.addEventListener('click', (e) => {
+      if (!isPointerLocked && !clickPrompt.classList.contains('hidden')) {
+        return;
       }
-    }
-  });
+      if (!isPointerLocked) {
+        lockPointer();
+      }
+    });
 
-  // Render
-  renderer.render(scene, camera);
-  labelRenderer.render(scene, camera);
-  drawMiniMap();
-  updateStats();
-  
-  requestAnimationFrame(loop);
-})();
-</script>
+    document.addEventListener('pointerlockchange', () => {
+      isPointerLocked = document.pointerLockElement === document.body;
+      if (isPointerLocked) {
+        clickPrompt.classList.add('hidden');
+      } else {
+        clickPrompt.classList.remove('hidden');
+        clickPrompt.innerHTML = '🖱️ คลิกเพื่อกลับมาเล่นต่อ 🌳<br><span style="font-size: 16px; opacity: 0.8; margin-top: 10px; display: block;">Click to Resume</span>';
+      }
+    });
+
+    window.addEventListener('keydown', e => {
+      const key = e.key.toLowerCase();
+      if (keys.hasOwnProperty(key)) keys[key] = true;
+      if (key === 'r') { yaw = 0; pitch = 0; }
+    });
+
+    window.addEventListener('keyup', e => {
+      const key = e.key.toLowerCase();
+      if (keys.hasOwnProperty(key)) keys[key] = false;
+    });
+
+    let yaw = 0, pitch = 0, yawVel = 0, pitchVel = 0;
+    const sensitivity = 0.002, inertia = 0.7;
+
+    document.addEventListener('mousemove', e => {
+      if (!isPointerLocked) return;
+      yawVel -= e.movementX * sensitivity;
+      pitchVel -= e.movementY * sensitivity;
+    });
+
+    let velocity = new THREE.Vector3();
+    const playerHeight = 2.5, speed = 8, jumpSpeed = 7, gravity = 12;
+    let canJump = false;
+    const raycaster = new THREE.Raycaster();
+    const down = new THREE.Vector3(0, -1, 0);
+
+    const minimap = document.getElementById("minimap");
+    const ctx = minimap ? minimap.getContext("2d") : null;
+
+    function drawMiniMap() {
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, minimap.width, minimap.height);
+
+      ctx.fillStyle = "rgba(20, 30, 40, 0.8)";
+      ctx.fillRect(0, 0, minimap.width, minimap.height);
+
+      const scale = 4.5;
+      const centerX = minimap.width / 2;
+      const centerY = minimap.height / 2;
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+      ctx.lineWidth = 1;
+      for (let i = -5; i <= 5; i++) {
+        ctx.beginPath();
+        ctx.moveTo(centerX + i * 20, 0);
+        ctx.lineTo(centerX + i * 20, minimap.height);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, centerY + i * 20);
+        ctx.lineTo(minimap.width, centerY + i * 20);
+        ctx.stroke();
+      }
+
+      projects.forEach((p, i) => {
+        const x = centerX + p.pos.x * scale;
+        const y = centerY - p.pos.z * scale;
+
+        ctx.fillStyle = "rgba(100, 200, 255, 0.8)";
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = "white";
+        ctx.font = "bold 12px Tahoma";
+        ctx.textAlign = "center";
+        ctx.fillText(`${i + 1}`, x, y + 4);
+      });
+
+      const px = centerX + player.position.x * scale;
+      const py = centerY - player.position.z * scale;
+
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(-yaw);
+
+      ctx.fillStyle = "red";
+      ctx.beginPath();
+      ctx.arc(0, 0, 7, 0, 2 * Math.PI);
+      ctx.fill();
+
+      ctx.fillStyle = "yellow";
+      ctx.beginPath();
+      ctx.moveTo(8, 0);
+      ctx.lineTo(-4, 4);
+      ctx.lineTo(-4, -4);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function updateStats() {
+      const pos = player.position;
+      document.getElementById('pos').textContent =
+        `${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}, ${pos.z.toFixed(1)}`;
+      document.getElementById('rot').textContent =
+        `${((yaw * 180 / Math.PI) % 360).toFixed(0)}°`;
+    }
+
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+      labelRenderer.setSize(innerWidth, innerHeight);
+    });
+
+    const clock = new THREE.Clock();
+
+    let targetCameraPos = null;
+    let lerpSpeed = 0.05;
+
+    function smoothMoveCamera(targetPos) {
+      targetCameraPos = targetPos.clone();
+    }
+
+    (function loop() {
+
+      if (targetCameraPos) {
+        camera.position.lerp(targetCameraPos, lerpSpeed);
+
+        if (camera.position.distanceTo(targetCameraPos) < 0.1) {
+          player.position.copy(targetCameraPos);
+          targetCameraPos = null;
+        }
+      }
+
+      const delta = Math.min(clock.getDelta(), 0.1);
+      const elapsed = performance.now() / 1000.0;
+
+      // อัปเดตแสงและการหมุนของ Torus models
+      scene.traverse((child) => {
+        if (child.userData.torusUniforms) {
+          child.userData.torusUniforms.uTime.value = elapsed;
+          child.userData.torusUniforms.uLightDir.value.set(
+            Math.sin(elapsed * 2.0),
+            0.4,
+            0.8
+          ).normalize();
+          child.rotation.x += delta * 0.5;
+          child.rotation.y += delta * 0.3;
+        }
+      });
+
+      yaw += yawVel;
+      pitch += pitchVel;
+      pitch = Math.max(-Math.PI / 2 + 0.1, Math.min(Math.PI / 2 - 0.1, pitch));
+      yawVel *= inertia;
+      pitchVel *= inertia;
+      player.rotation.y = yaw;
+      cameraPivot.rotation.x = pitch;
+
+      const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(player.quaternion);
+      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(player.quaternion);
+
+      let moveDir = new THREE.Vector3();
+      if (keys.w) moveDir.add(forward);
+      if (keys.s) moveDir.sub(forward);
+      if (keys.d) moveDir.add(right);
+      if (keys.a) moveDir.sub(right);
+
+      if (moveDir.length() > 0) {
+        moveDir.normalize();
+        player.position.addScaledVector(moveDir, speed * delta);
+      }
+
+      raycaster.set(player.position, down);
+      const intersects = raycaster.intersectObjects(walkableObjects.concat([floor]), true);
+      let onGround = false;
+
+      if (intersects.length > 0) {
+        const groundY = intersects[0].point.y;
+        if (player.position.y <= groundY + playerHeight + 0.05) {
+          onGround = true;
+          player.position.y = THREE.MathUtils.lerp(player.position.y, groundY + playerHeight, 0.3);
+          velocity.y = 0;
+          canJump = true;
+        }
+      }
+
+      if (keys.space && canJump) {
+        velocity.y = jumpSpeed;
+        canJump = false;
+      }
+
+      if (!onGround) {
+        velocity.y -= gravity * delta;
+        player.position.y += velocity.y * delta;
+      }
+
+      projects.forEach(p => {
+        if (p.label && p.element) {
+          const dist = player.position.distanceTo(p.pos);
+          const toProject = new THREE.Vector3().subVectors(p.pos, player.position).normalize();
+          const playerForward = new THREE.Vector3(0, 0, -1).applyQuaternion(player.quaternion);
+          const dotProduct = toProject.dot(playerForward);
+          const isBehind = dotProduct < -0.3;
+
+          if (isBehind) {
+            p.element.style.display = 'none';
+          } else {
+            p.element.style.display = 'block';
+
+            let s;
+            if (dist < 2) s = 2.5;
+            else if (dist < 5) s = 2.0;
+            else if (dist < 10) s = 1.5;
+            else if (dist < 15) s = 1.2;
+            else if (dist < 20) s = 1.0;
+            else if (dist < 30) s = 0.8;
+            else s = 0.6;
+
+            const opacity = dist > 35 ? 0.4 : (dist > 25 ? 0.7 : 1);
+            p.element.style.transform = `scale(${s})`;
+            p.element.style.opacity = opacity;
+          }
+        }
+      });
+
+      renderer.render(scene, camera);
+      labelRenderer.render(scene, camera);
+      updateStats();
+
+      requestAnimationFrame(loop);
+    })();
+
+  </script>
 </body>
+
 </html>
