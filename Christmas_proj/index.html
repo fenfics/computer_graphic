@@ -76,7 +76,7 @@
     transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
     transform-style: preserve-3d;
   }
-  .flip-card:hover .flip-card-inner {
+  .flip-card.flipped .flip-card-inner {
     transform: rotateY(180deg);
   }
   .flip-card-front,
@@ -107,6 +107,13 @@
     margin-top: 20px;
     letter-spacing: 1px;
     opacity: 0.7;
+  }
+  
+  /* ซ่อนคำแนะนำบนมือถือ */
+  @media (max-width: 768px) {
+    .instruction {
+      display: none;
+    }
   }
   
   /* ปุ่มเสียงแบบมินิมอล */
@@ -166,7 +173,7 @@
   </div>
 </div>
 
-<p class="instruction">Hover to flip</p>
+<p class="instruction">Tap or Hover to flip</p>
 
 <button class="sound-btn" onclick="toggleSound()">
   ♪ PLAY MUSIC
@@ -203,6 +210,32 @@
       btn.textContent = "♪ PLAY MUSIC";
     }
   }
+  
+  // ระบบพลิกการ์ดสำหรับมือถือและแท็บเล็ต
+  const flipCard = document.querySelector('.flip-card');
+  let isFlipped = false;
+  
+  flipCard.addEventListener('click', function() {
+    isFlipped = !isFlipped;
+    if (isFlipped) {
+      flipCard.classList.add('flipped');
+    } else {
+      flipCard.classList.remove('flipped');
+    }
+  });
+  
+  // รองรับ hover บนคอมพิวเตอร์
+  flipCard.addEventListener('mouseenter', function() {
+    if (window.innerWidth > 768) {
+      flipCard.classList.add('flipped');
+    }
+  });
+  
+  flipCard.addEventListener('mouseleave', function() {
+    if (window.innerWidth > 768) {
+      flipCard.classList.remove('flipped');
+    }
+  });
 </script>
 </body>
 </html>
