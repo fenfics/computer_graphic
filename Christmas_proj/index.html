@@ -4,25 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Christmas Flip Card</title>
-
 <style>
   body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-
+  /* หิมะตก */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    animation: fall linear infinite;
+    opacity: 0.8;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(100vh);
+    }
+  }
   /* การ์ด */
   .flip-card {
-    width: 2048px;
-    height: 2048px;
+    width: min(500px, 90vw);
+    height: min(500px, 90vw);
     perspective: 1000px;
+    margin: 20px 0;
   }
-
   .flip-card-inner {
     width: 100%;
     height: 100%;
@@ -30,11 +48,9 @@
     transition: transform 0.8s;
     transform-style: preserve-3d;
   }
-
   .flip-card:hover .flip-card-inner {
     transform: rotateY(180deg);
   }
-
   .flip-card-front,
   .flip-card-back {
     position: absolute;
@@ -42,79 +58,107 @@
     height: 100%;
     backface-visibility: hidden;
   }
-
   .flip-card-front img,
   .flip-card-back img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
-
   .flip-card-back {
     transform: rotateY(180deg);
   }
-
   /* ปุ่มเสียง */
   .sound-btn {
     margin-top: 20px;
-    padding: 10px 20px;
-    background: #c62828;
+    padding: 15px 35px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     color: #fff;
     border: none;
-    border-radius: 20px;
+    border-radius: 30px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
   }
-
   .sound-btn:hover {
-    background: #a61c1c;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  }
+  .sound-btn:active {
+    transform: translateY(-1px);
+  }
+  /* ข้อความต้อนรับ */
+  .title {
+    color: white;
+    font-size: 2.5em;
+    font-weight: bold;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    margin-bottom: 10px;
+    text-align: center;
+    animation: glow 2s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%, 100% { text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.5); }
+    50% { text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 40px rgba(255,255,255,0.8); }
   }
 </style>
 </head>
-
 <body>
-
-<!-- เพลง (เปลี่ยนลิงก์เพลงได้) -->
-<audio id="bgMusic" autoplay muted loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<!-- เพลง Jingle Bells -->
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-jazzyfrenchy.mp3" type="audio/mpeg">
 </audio>
+
+<h1 class="title">🎄 Merry Christmas 🎄</h1>
 
 <div class="flip-card">
   <div class="flip-card-inner">
-
     <!-- หน้า -->
     <div class="flip-card-front">
       <img src="https://raw.githubusercontent.com/fenfics/computer_graphic/main/front.jpg">
     </div>
-
     <!-- หลัง -->
     <div class="flip-card-back">
       <img src="https://raw.githubusercontent.com/fenfics/computer_graphic/main/back.jpg">
     </div>
-
   </div>
 </div>
-
 <!-- ปุ่มเปิด/ปิดเสียง -->
 <button class="sound-btn" onclick="toggleSound()">
   🔇 เปิดเสียง
 </button>
-
 <script>
+  // หิมะตก
+  function createSnowflake() {
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    snowflake.innerHTML = '❄';
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+    snowflake.style.fontSize = Math.random() * 1 + 0.5 + 'em';
+    document.body.appendChild(snowflake);
+    setTimeout(() => {
+      snowflake.remove();
+    }, 8000);
+  }
+  setInterval(createSnowflake, 200);
+
+  // เสียง
   const music = document.getElementById("bgMusic");
   const btn = document.querySelector(".sound-btn");
-
+  
   function toggleSound() {
-    if (music.muted) {
-      music.muted = false;
+    if (music.paused) {
+      music.play();
       btn.textContent = "🔊 ปิดเสียง";
     } else {
-      music.muted = true;
+      music.pause();
       btn.textContent = "🔇 เปิดเสียง";
     }
   }
 </script>
-
 </body>
 </html>
