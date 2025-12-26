@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,137 +9,351 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
-/* ===== ธีมกลางคืน ===== */
-body {
+* {
   margin: 0;
-  background: radial-gradient(circle at top, #1b2735, #090a0f);
-  color: #fff;
-  font-family: Tahoma, sans-serif;
-  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ดาว */
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Animated gradient overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1), transparent 70%);
+  animation: pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Enhanced stars with twinkling */
 .star {
+  position: fixed;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.star.small {
+  width: 1px;
+  height: 1px;
+}
+
+.star.medium {
+  width: 2px;
+  height: 2px;
+  box-shadow: 0 0 4px rgba(255,255,255,0.8);
+}
+
+.star.large {
+  width: 3px;
+  height: 3px;
+  box-shadow: 0 0 6px rgba(255,255,255,0.9);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Modern glassmorphism UI */
+.top-ui {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 600px;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+#counter {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  font-size: 18px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Modern input container */
+.container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+textarea {
+  width: 100%;
+  height: 80px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: inherit;
+  resize: none;
+  transition: all 0.3s ease;
+}
+
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: rgba(138, 43, 226, 0.6);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.options {
+  margin: 16px 0;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.options label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.options label:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.options input[type="radio"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.send-btn {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.send-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.send-btn:active {
+  transform: translateY(0);
+}
+
+/* Modern glowing wishes */
+.wish {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 24px;
+  font-weight: 600;
+  animation: move 16s linear forwards;
+  letter-spacing: 0.5px;
+  z-index: 10;
+}
+
+@keyframes move {
+  from { 
+    left: 100%; 
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  to { 
+    left: -120%; 
+    opacity: 0;
+  }
+}
+
+/* Enhanced fireworks */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: explode 1.5s ease-out forwards;
+  box-shadow: 0 0 10px currentColor;
+}
+
+@keyframes explode {
+  0% { 
+    transform: scale(0) rotate(0deg); 
+    opacity: 1; 
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    transform: scale(8) rotate(180deg); 
+    opacity: 0; 
+  }
+}
+
+/* Shooting stars */
+.shooting-star {
   position: fixed;
   width: 2px;
   height: 2px;
   background: white;
-  opacity: .8;
-}
-
-/* UI ด้านบน */
-.top-ui {
-  position: fixed;
-  top: 10px;
-  width: 100%;
-  padding: 0 12px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 999;
-  font-size: 14px;
-}
-
-/* กล่องพิมพ์ */
-.container {
-  position: fixed;
-  bottom: 15px;
-  width: 100%;
-  text-align: center;
-}
-
-textarea {
-  width: 85%;
-  max-width: 500px;
-  height: 70px;
-  border-radius: 14px;
-  border: none;
-  padding: 12px;
-  font-size: 16px;
-}
-
-.options {
-  margin: 6px;
-  font-size: 14px;
-}
-
-button {
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg,#ffcc70,#ff8177);
-  font-size: 15px;
-}
-
-/* ข้อความวิ่ง + เรืองแสง */
-.wish {
-  position: absolute;
-  white-space: nowrap;
-  font-size: 22px;
-  animation: move 14s linear forwards;
-}
-
-@keyframes move {
-  from { left: 100%; }
-  to { left: -120%; }
-}
-
-/* ดอกไม้ไฟ */
-.firework {
-  position: absolute;
-  width: 8px;
-  height: 8px;
   border-radius: 50%;
-  animation: explode 1s ease-out forwards;
+  box-shadow: 0 0 4px white, 0 0 8px white;
+  animation: shoot 2s ease-out forwards;
 }
 
-@keyframes explode {
-  from { transform: scale(1); opacity: 1; }
-  to { transform: scale(6); opacity: 0; }
+@keyframes shoot {
+  from {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-300px) translateY(300px);
+    opacity: 0;
+  }
 }
 
-/* 📱 ปรับมือถือ */
+/* Mobile responsive */
 @media (max-width: 600px) {
-  .wish { font-size: 18px; }
-  textarea { height: 60px; }
+  .wish { font-size: 20px; }
+  textarea { height: 70px; font-size: 15px; }
+  .top-ui { padding: 12px 16px; }
+  .container { padding: 20px; bottom: 20px; }
+  #counter { font-size: 16px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ดาวพื้นหลัง -->
+<!-- Enhanced starfield -->
 <script>
-for(let i=0;i<120;i++){
+for(let i=0;i<150;i++){
   const s=document.createElement("div");
-  s.className="star";
+  s.className="star " + (Math.random() > 0.7 ? "large" : Math.random() > 0.4 ? "medium" : "small");
   s.style.left=Math.random()*100+"%";
   s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=Math.random()*3+"s";
   document.body.appendChild(s);
 }
+
+// Shooting stars
+setInterval(()=>{
+  const ss=document.createElement("div");
+  ss.className="shooting-star";
+  ss.style.left=Math.random()*100+"%";
+  ss.style.top=Math.random()*50+"%";
+  document.body.appendChild(ss);
+  setTimeout(()=>ss.remove(),2000);
+}, 5000);
 </script>
 
 <div class="top-ui">
-  <div id="counter">🎁 0</div>
-  <div>
-    <button onclick="toggleSound()" id="soundBtn">🔊</button>
-    <button onclick="openAdmin()">🔐</button>
+  <div id="counter">🎁 <span id="count">0</span></div>
+  <div class="button-group">
+    <button class="icon-btn" onclick="toggleSound()" id="soundBtn">🔊</button>
+    <button class="icon-btn" onclick="openAdmin()">🔐</button>
   </div>
 </div>
 
 <div class="container">
-  <textarea id="message" placeholder="เขียนคำอวยพรปีใหม่ ✨"></textarea>
+  <textarea id="message" placeholder="Write your New Year wish ✨"></textarea>
   <div class="options">
-    <label><input type="radio" name="type" value="public" checked> โชว์</label>
-    <label><input type="radio" name="type" value="private"> ส่วนตัว</label>
+    <label>
+      <input type="radio" name="type" value="public" checked> 
+      <span>Public</span>
+    </label>
+    <label>
+      <input type="radio" name="type" value="private"> 
+      <span>Private</span>
+    </label>
   </div>
-  <button onclick="sendWish()">ส่ง 🎆</button>
+  <button class="send-btn" onclick="sendWish()">Send Wish 🎆</button>
 </div>
 
 <audio id="bgm" src="newyear.mp3" loop></audio>
 
 <script>
-/* 🔥 Firebase */
+/* Firebase Configuration */
 const firebaseConfig = {
   apiKey: "AIzaSyC5nh5OL1fTZ1uPqiEUxWb735YHvdM5CCM",
   authDomain: "newyear-wish.firebaseapp.com",
@@ -152,80 +366,120 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-/* 🔊 เสียง */
+/* Sound control */
 const bgm=document.getElementById("bgm");
 let playing=false;
 function toggleSound(){
-  playing?bgm.pause():bgm.play();
-  document.getElementById("soundBtn").innerText=playing?"🔊":"🔇";
+  if(playing){
+    bgm.pause();
+    document.getElementById("soundBtn").innerText="🔇";
+  } else {
+    bgm.play();
+    document.getElementById("soundBtn").innerText="🔊";
+  }
   playing=!playing;
 }
 
-/* ✨ สีเรืองแสงสุ่ม */
+/* Random glow colors */
 function randomGlow(){
-  const colors=["#ffcc70","#7afcff","#ff7aed","#7CFF7A","#FFD700"];
+  const colors=["#667eea","#764ba2","#f093fb","#4facfe","#43e97b","#fa709a","#fee140","#30cfd0"];
   return colors[Math.floor(Math.random()*colors.length)];
 }
 
-/* ส่งข้อความ */
+/* Send wish */
 function sendWish(){
-  const msg=message.value;
+  const msg=message.value.trim();
   const type=document.querySelector('input[name="type"]:checked').value;
-  if(msg.trim()==="") return alert("กรุณาเขียนคำอวยพร");
-  db.ref("wishes").push({message:msg,type:type});
+  if(msg==="") return alert("Please write your wish!");
+  db.ref("wishes").push({message:msg,type:type,timestamp:Date.now()});
   message.value="";
+  
+  // Visual feedback
+  const btn=document.querySelector('.send-btn');
+  btn.style.transform='scale(0.95)';
+  setTimeout(()=>btn.style.transform='scale(1)',100);
 }
 
-/* แสดงข้อความ */
+/* Display wish */
 function showWish(text){
   const d=document.createElement("div");
   const glow=randomGlow();
   d.className="wish";
   d.innerText=text;
-  d.style.top=Math.random()*70+"%";
+  d.style.top=(Math.random()*60+10)+"%";
   d.style.color=glow;
-  d.style.textShadow=`0 0 10px ${glow},0 0 20px ${glow}`;
+  d.style.textShadow=`0 0 20px ${glow}, 0 0 40px ${glow}, 0 0 60px ${glow}`;
   document.body.appendChild(d);
-  setTimeout(()=>d.remove(),14000);
+  setTimeout(()=>d.remove(),16000);
 }
 
-/* ดอกไม้ไฟ */
+/* Enhanced fireworks */
 function firework(){
-  for(let i=0;i<10;i++){
-    const f=document.createElement("div");
-    const c=randomGlow();
-    f.className="firework";
-    f.style.background=c;
-    f.style.left=Math.random()*innerWidth+"px";
-    f.style.top=Math.random()*innerHeight+"px";
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(),1000);
+  const x=Math.random()*window.innerWidth;
+  const y=Math.random()*(window.innerHeight*0.6);
+  
+  for(let i=0;i<15;i++){
+    setTimeout(()=>{
+      const f=document.createElement("div");
+      const c=randomGlow();
+      const angle=Math.random()*Math.PI*2;
+      const distance=Math.random()*100+50;
+      
+      f.className="firework";
+      f.style.background=c;
+      f.style.color=c;
+      f.style.left=x+"px";
+      f.style.top=y+"px";
+      f.style.transform=`translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance}px)`;
+      
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),1500);
+    }, i*50);
   }
 }
 
-/* realtime */
+/* Realtime listener */
 let count=0;
 db.ref("wishes").on("child_added",snap=>{
   const d=snap.val();
   count++;
-  counter.innerText="🎁 "+count;
+  document.getElementById("count").innerText=count;
+  
   if(d.type==="public"){
     showWish(d.message);
     firework();
   }
 });
 
-/* 🔐 Admin */
+/* Admin panel */
 function openAdmin(){
-  if(prompt("Admin password")!=="1234") return;
+  const pass=prompt("Enter admin password:");
+  if(pass!=="1234") return alert("Incorrect password!");
+  
   db.ref("wishes").once("value",snap=>{
-    let t="คำอวยพรลับ\n\n";
+    let privateWishes=[];
     snap.forEach(s=>{
-      if(s.val().type==="private") t+="• "+s.val().message+"\n";
+      const wish=s.val();
+      if(wish.type==="private") {
+        privateWishes.push(wish.message);
+      }
     });
-    alert(t);
+    
+    if(privateWishes.length===0){
+      alert("No private wishes yet.");
+    } else {
+      alert("Private Wishes:\n\n" + privateWishes.map((w,i)=>`${i+1}. ${w}`).join("\n\n"));
+    }
   });
 }
+
+/* Enter key to send */
+document.getElementById("message").addEventListener("keydown", function(e){
+  if(e.key==="Enter" && !e.shiftKey){
+    e.preventDefault();
+    sendWish();
+  }
+});
 </script>
 
 </body>
