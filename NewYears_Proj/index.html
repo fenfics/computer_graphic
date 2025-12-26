@@ -248,30 +248,39 @@ textarea:focus {
   transform: translateY(0);
 }
 
-/* Modern glowing wishes */
+/* Modern glowing wishes with floating animation */
 .wish {
   position: absolute;
   white-space: nowrap;
   font-size: 24px;
   font-weight: 600;
-  animation: move 16s linear forwards;
   letter-spacing: 0.5px;
   z-index: 10;
+  animation: float 20s ease-in-out infinite;
 }
 
-@keyframes move {
-  from { 
-    left: 100%; 
+@keyframes float {
+  0% { 
+    transform: translateX(100vw) translateY(0) rotate(0deg);
     opacity: 0;
   }
   5% {
     opacity: 1;
   }
+  25% {
+    transform: translateX(50vw) translateY(-30px) rotate(5deg);
+  }
+  50% {
+    transform: translateX(0vw) translateY(0px) rotate(-5deg);
+  }
+  75% {
+    transform: translateX(-50vw) translateY(-20px) rotate(3deg);
+  }
   95% {
     opacity: 1;
   }
-  to { 
-    left: -120%; 
+  100% { 
+    transform: translateX(-120vw) translateY(0) rotate(0deg);
     opacity: 0;
   }
 }
@@ -381,18 +390,18 @@ setInterval(()=>{
   <button class="send-btn" onclick="sendWish()">Send Wish 🎆</button>
 </div>
 
-<audio id="bgm" src="newyear.mp3" loop></audio>
+<audio id="bgm" loop></audio>
 
 <script>
 /* Firebase Configuration */
 const firebaseConfig = {
-  apiKey: "AIzaSyC5nh5OL1fTZ1uPqiEUxWb735YHvdM5CCM",
-  authDomain: "newyear-wish.firebaseapp.com",
-  projectId: "newyear-wish",
-  storageBucket: "newyear-wish.firebasestorage.app",
-  messagingSenderId: "264802822732",
-  appId: "1:264802822732:web:3ab75e129f8521053422e9",
-  measurementId: "G-PB1VKW6T0J"
+  apiKey: "AIzaSyAKYkE2MLEYt6uurJ4SzDWYAzvYj4iJEEE",
+  authDomain: "newyear-project.firebaseapp.com",
+  projectId: "newyear-project",
+  storageBucket: "newyear-project.firebasestorage.app",
+  messagingSenderId: "222297445500",
+  appId: "1:222297445500:web:a59d3ad7e1916ef23da5f9",
+  measurementId: "G-WG9MX3MD9E"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
@@ -400,12 +409,17 @@ const db = firebase.database();
 /* Sound control */
 const bgm=document.getElementById("bgm");
 let playing=false;
+
+// Use a copyright-free background music from CDN (optional)
+// You can replace this URL with your own music file
+bgm.src = "https://cdn.pixabay.com/download/audio/2022/03/10/audio_4a2d836b00.mp3"; // Happy New Year music
+
 function toggleSound(){
   if(playing){
     bgm.pause();
     document.getElementById("soundBtn").innerText="🔇";
   } else {
-    bgm.play();
+    bgm.play().catch(e=>console.log("Audio play failed:", e));
     document.getElementById("soundBtn").innerText="🔊";
   }
   playing=!playing;
@@ -449,10 +463,13 @@ function showWish(name, text){
   d.className="wish";
   d.innerHTML=`<strong>${name}:</strong> ${text}`;
   d.style.top=(Math.random()*60+10)+"%";
+  d.style.left="100%";
   d.style.color=glow;
   d.style.textShadow=`0 0 20px ${glow}, 0 0 40px ${glow}, 0 0 60px ${glow}`;
+  d.style.animationDuration=(15 + Math.random()*10)+"s";
+  d.style.animationDelay=Math.random()*2+"s";
   document.body.appendChild(d);
-  setTimeout(()=>d.remove(),16000);
+  setTimeout(()=>d.remove(),25000);
 }
 
 /* Enhanced fireworks */
