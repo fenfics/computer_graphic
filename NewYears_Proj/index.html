@@ -2,21 +2,32 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>🎆 Happy New Year 🎆</title>
+<title>🌙 Happy New Year Night</title>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
+/* ===== ธีมกลางคืน ===== */
 body {
   margin: 0;
-  background: linear-gradient(#000428, #004e92);
-  color: white;
+  background: radial-gradient(circle at top, #1b2735, #090a0f);
+  color: #fff;
   font-family: Tahoma, sans-serif;
   overflow: hidden;
 }
 
+/* ดาวพื้นหลัง */
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: white;
+  opacity: 0.8;
+}
+
+/* กล่องพิมพ์ */
 .container {
   position: fixed;
   bottom: 20px;
@@ -26,105 +37,194 @@ body {
 
 textarea {
   width: 60%;
-  height: 60px;
+  height: 70px;
+  border-radius: 12px;
+  border: none;
+  padding: 12px;
   font-size: 16px;
-  border-radius: 8px;
-  padding: 10px;
 }
 
 .options {
-  margin: 10px;
+  margin: 8px;
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 8px;
+  padding: 10px 22px;
+  border-radius: 20px;
   border: none;
   cursor: pointer;
+  background: linear-gradient(135deg,#ffcc70,#ff8177);
+  font-size: 16px;
 }
 
+/* ข้อความวิ่ง */
 .wish {
   position: absolute;
   white-space: nowrap;
   font-size: 24px;
+  text-shadow: 0 0 10px #ffd700;
   animation: move 15s linear forwards;
 }
 
 @keyframes move {
   from { left: 100%; }
-  to { left: -100%; }
+  to { left: -120%; }
+}
+
+/* ดอกไม้ไฟ */
+.firework {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: gold;
+  border-radius: 50%;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(6); opacity: 0; }
+}
+
+/* UI บน */
+.top-ui {
+  position: fixed;
+  top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  z-index: 999;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ดาว -->
+<script>
+for(let i=0;i<120;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  document.body.appendChild(s);
+}
+</script>
+
+<!-- UI ด้านบน -->
+<div class="top-ui">
+  <div id="counter">🎁 คำอวยพรทั้งหมด: 0</div>
+  <div>
+    <button onclick="toggleSound()" id="soundBtn">🔊 เปิดเสียง</button>
+    <button onclick="openAdmin()">🔐 Admin</button>
+  </div>
+</div>
+
+<!-- กล่องพิมพ์ -->
 <div class="container">
-  <textarea id="message" placeholder="เขียนคำอวยพรปีใหม่ 💖"></textarea>
+  <textarea id="message" placeholder="เขียนคำอวยพรปีใหม่ใต้แสงดาว ✨"></textarea>
 
   <div class="options">
     <label>
       <input type="radio" name="type" value="public" checked>
-      โชว์บนหน้าเว็บ
+      🌠 โชว์บนหน้าเว็บ
     </label>
     <label>
       <input type="radio" name="type" value="private">
-      ส่งให้เจ้าของเว็บอ่านเท่านั้น
+      🔒 ส่งให้เจ้าของอ่านเท่านั้น
     </label>
   </div>
 
-  <button onclick="sendWish()">ส่งคำอวยพร 🎁</button>
+  <button onclick="sendWish()">ส่งคำอวยพร 🎆</button>
 </div>
 
+<audio id="bgm" src="newyear.mp3" loop></audio>
+
 <script>
-/* 🔥 ใส่ firebaseConfig ของคุณตรงนี้ */
+/* 🔥 Firebase Config (ใส่ของคุณ) */
 const firebaseConfig = {
-  apiKey: "AIzaSyC5nh5OL1fTZ1uPqiEUxWb735YHvdM5CCM",
-  authDomain: "newyear-wish.firebaseapp.com",
-  projectId: "newyear-wish",
-  storageBucket: "newyear-wish.firebasestorage.app",
-  messagingSenderId: "264802822732",
-  appId: "1:264802822732:web:3ab75e129f8521053422e9",
-  measurementId: "G-PB1VKW6T0J"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
-  
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-/* ส่งคำอวยพร */
-function sendWish() {
-  const text = document.getElementById("message").value;
-  const type = document.querySelector('input[name="type"]:checked').value;
-
-  if (text.trim() === "") return alert("กรุณาเขียนคำอวยพร");
-
-  db.ref("wishes").push({
-    message: text,
-    type: type,
-    time: Date.now()
-  });
-
-  document.getElementById("message").value = "";
+/* 🔊 เสียง */
+const bgm = document.getElementById("bgm");
+let playing = false;
+function toggleSound(){
+  const btn=document.getElementById("soundBtn");
+  if(playing){
+    bgm.pause(); btn.innerText="🔊 เปิดเสียง";
+  }else{
+    bgm.play(); btn.innerText="🔇 ปิดเสียง";
+  }
+  playing=!playing;
 }
 
-/* ดึงคำอวยพร public มาโชว์ */
-db.ref("wishes").on("child_added", snapshot => {
-  const data = snapshot.val();
-  if (data.type === "public") {
+/* ส่งคำอวยพร */
+function sendWish(){
+  const msg=document.getElementById("message").value;
+  const type=document.querySelector('input[name="type"]:checked').value;
+  if(msg.trim()==="") return alert("กรุณาเขียนคำอวยพร");
+  db.ref("wishes").push({message:msg,type:type,time:Date.now()});
+  document.getElementById("message").value="";
+}
+
+/* แสดงคำอวยพร */
+function showWish(text){
+  const d=document.createElement("div");
+  d.className="wish";
+  d.innerText=text;
+  d.style.top=Math.random()*75+"%";
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),15000);
+}
+
+/* ดอกไม้ไฟ */
+function firework(){
+  for(let i=0;i<12;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left=Math.random()*window.innerWidth+"px";
+    f.style.top=Math.random()*window.innerHeight+"px";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+}
+
+/* นับ + realtime */
+let count=0;
+db.ref("wishes").on("child_added",snap=>{
+  const data=snap.val();
+  count++;
+  document.getElementById("counter").innerText="🎁 คำอวยพรทั้งหมด: "+count;
+  if(data.type==="public"){
     showWish(data.message);
+    firework();
   }
 });
 
-/* แสดงข้อความวิ่ง */
-function showWish(text) {
-  const div = document.createElement("div");
-  div.className = "wish";
-  div.innerText = text;
-  div.style.top = Math.random() * 80 + "%";
-  document.body.appendChild(div);
-
-  setTimeout(() => div.remove(), 15000);
+/* 🔐 Admin */
+function openAdmin(){
+  const pass=prompt("ใส่รหัสผ่าน Admin:");
+  if(pass!=="1234") return alert("รหัสผ่านไม่ถูกต้อง");
+  db.ref("wishes").once("value",snap=>{
+    let text="🔐 คำอวยพรลับ\n\n";
+    snap.forEach(s=>{
+      if(s.val().type==="private"){
+        text+="• "+s.val().message+"\n";
+      }
+    });
+    alert(text);
+  });
 }
 </script>
 
