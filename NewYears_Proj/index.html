@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>🎆 Happy New Year 🎆</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(#000428, #004e92);
+  color: white;
+  font-family: Tahoma, sans-serif;
+  overflow: hidden;
+}
+
+.container {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+textarea {
+  width: 60%;
+  height: 60px;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.options {
+  margin: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.wish {
+  position: absolute;
+  white-space: nowrap;
+  font-size: 24px;
+  animation: move 15s linear forwards;
+}
+
+@keyframes move {
+  from { left: 100%; }
+  to { left: -100%; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <textarea id="message" placeholder="เขียนคำอวยพรปีใหม่ 💖"></textarea>
+
+  <div class="options">
+    <label>
+      <input type="radio" name="type" value="public" checked>
+      โชว์บนหน้าเว็บ
+    </label>
+    <label>
+      <input type="radio" name="type" value="private">
+      ส่งให้เจ้าของเว็บอ่านเท่านั้น
+    </label>
+  </div>
+
+  <button onclick="sendWish()">ส่งคำอวยพร 🎁</button>
+</div>
+
+<script>
+/* 🔥 ใส่ firebaseConfig ของคุณตรงนี้ */
+const firebaseConfig = {
+  apiKey: "AIzaSyC5nh5OL1fTZ1uPqiEUxWb735YHvdM5CCM",
+  authDomain: "newyear-wish.firebaseapp.com",
+  projectId: "newyear-wish",
+  storageBucket: "newyear-wish.firebasestorage.app",
+  messagingSenderId: "264802822732",
+  appId: "1:264802822732:web:3ab75e129f8521053422e9",
+  measurementId: "G-PB1VKW6T0J"
+};
+  
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+/* ส่งคำอวยพร */
+function sendWish() {
+  const text = document.getElementById("message").value;
+  const type = document.querySelector('input[name="type"]:checked').value;
+
+  if (text.trim() === "") return alert("กรุณาเขียนคำอวยพร");
+
+  db.ref("wishes").push({
+    message: text,
+    type: type,
+    time: Date.now()
+  });
+
+  document.getElementById("message").value = "";
+}
+
+/* ดึงคำอวยพร public มาโชว์ */
+db.ref("wishes").on("child_added", snapshot => {
+  const data = snapshot.val();
+  if (data.type === "public") {
+    showWish(data.message);
+  }
+});
+
+/* แสดงข้อความวิ่ง */
+function showWish(text) {
+  const div = document.createElement("div");
+  div.className = "wish";
+  div.innerText = text;
+  div.style.top = Math.random() * 80 + "%";
+  document.body.appendChild(div);
+
+  setTimeout(() => div.remove(), 15000);
+}
+</script>
+
+</body>
+</html>
