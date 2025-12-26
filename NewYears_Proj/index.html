@@ -158,6 +158,31 @@ textarea {
   font-family: inherit;
   resize: none;
   transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 50px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0 16px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #fff !important;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: rgba(138, 43, 226, 0.6);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 
 textarea::placeholder {
@@ -341,6 +366,7 @@ setInterval(()=>{
 </div>
 
 <div class="container">
+  <input type="text" id="name" placeholder="Your name" maxlength="30">
   <textarea id="message" placeholder="Write your New Year wish ✨"></textarea>
   <div class="options">
     <label>
@@ -393,10 +419,21 @@ function randomGlow(){
 
 /* Send wish */
 function sendWish(){
+  const name=document.getElementById("name").value.trim();
   const msg=message.value.trim();
   const type=document.querySelector('input[name="type"]:checked').value;
+  
+  if(name==="") return alert("Please enter your name!");
   if(msg==="") return alert("Please write your wish!");
-  db.ref("wishes").push({message:msg,type:type,timestamp:Date.now()});
+  
+  db.ref("wishes").push({
+    name: name,
+    message: msg,
+    type: type,
+    timestamp: Date.now()
+  });
+  
+  document.getElementById("name").value="";
   message.value="";
   
   // Visual feedback
@@ -406,11 +443,11 @@ function sendWish(){
 }
 
 /* Display wish */
-function showWish(text){
+function showWish(name, text){
   const d=document.createElement("div");
   const glow=randomGlow();
   d.className="wish";
-  d.innerText=text;
+  d.innerHTML=`<strong>${name}:</strong> ${text}`;
   d.style.top=(Math.random()*60+10)+"%";
   d.style.color=glow;
   d.style.textShadow=`0 0 20px ${glow}, 0 0 40px ${glow}, 0 0 60px ${glow}`;
@@ -451,7 +488,7 @@ db.ref("wishes").on("child_added",snap=>{
   document.getElementById("count").innerText=count;
   
   if(d.type==="public"){
-    showWish(d.message);
+    showWish(d.name || "Anonymous", d.message);
     firework();
   }
 });
@@ -466,7 +503,7 @@ function openAdmin(){
     snap.forEach(s=>{
       const wish=s.val();
       if(wish.type==="private") {
-        privateWishes.push(wish.message);
+        privateWishes.push(`${wish.name || "Anonymous"}: ${wish.message}`);
       }
     });
     
