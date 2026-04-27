@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บางแสน · เกาะสีชัง · ศรีราชา</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #1a6b8a;
+    --sea: #2a93bb;
+    --sky: #56bcd4;
+    --sky-light: #e8f7fb;
+    --sand: #fef6e4;
+    --sand-mid: #fdecc4;
+    --coral: #e05a2b;
+    --coral-light: #fff0ea;
+    --sunset: #f09523;
+    --sunset-light: #fff7ec;
+    --foam: #f0fafd;
+    --bg: #f7f9fb;
+    --bg2: #eef4f7;
+    --card: #ffffff;
+    --text: #1c3545;
+    --text2: #4a6b7c;
+    --text3: #8aaab8;
+    --border: #dcedf3;
+    --border2: #c8dfe8;
+    --green: #2a9a72;
+    --green-light: #e6f7f1;
+    --purple: #8b5cf6;
+    --purple-light: #f3efff;
+    --yellow: #d97706;
+    --yellow-light: #fffbeb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(150deg, #e8f7fb 0%, #ceeef8 40%, #b8e6f5 70%, #d4eff5 100%);
+    padding: 48px 24px 72px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(86,188,212,0.25) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 64px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 64'%3E%3Cpath d='M0,32 C200,64 400,0 600,32 C800,64 1000,0 1200,32 L1200,64 L0,64 Z' fill='%23f7f9fb'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+  .hero-deco {
+    position: absolute;
+    bottom: 20px; left: 30px;
+    font-size: 48px; opacity: 0.12;
+    line-height: 1;
+  }
+  .hero-deco2 {
+    position: absolute;
+    top: 24px; left: 24px;
+    font-size: 28px; opacity: 0.2;
+    letter-spacing: 6px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: white;
+    border: 1.5px solid var(--border2);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: 12px;
+    font-family: 'Kanit', sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sea);
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(42,147,187,0.12);
+  }
+  .hero h1 {
+    font-family: 'Kanit', sans-serif;
+    font-size: clamp(30px, 7vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hero h1 .accent { color: var(--sea); }
+  .hero h1 .accent2 { color: var(--coral); }
+  .hero-route {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .route-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text3); }
+  .hero-pills {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .pill {
+    background: white;
+    border: 1.5px solid var(--border2);
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--ocean);
+    font-weight: 500;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 0 16px;
+    position: sticky; top: 0; z-index: 100;
+    overflow-x: auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .tab {
+    padding: 16px 24px;
+    font-family: 'Kanit', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text3);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab:hover { color: var(--sea); }
+  .tab.active { color: var(--ocean); border-bottom-color: var(--sea); font-weight: 600; }
+  .tab-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--bg2);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    color: var(--text3);
+    transition: all 0.2s;
+  }
+  .tab.active .tab-num {
+    background: var(--sea); color: white;
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 16px 80px;
+  }
+  .day-section { display: none; }
+  .day-section.active { display: block; }
+
+  /* DAY HEADER */
+  .day-header {
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 28px;
+    padding: 20px;
+    background: white;
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .day-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; flex-shrink: 0;
+  }
+  .d1 { background: linear-gradient(135deg, #b8e6f5, #7dcde8); }
+  .d2 { background: linear-gradient(135deg, #fde8d4, #f8c49a); }
+  .d3 { background: linear-gradient(135deg, #c8f0e0, #7dd4b0); }
+  .day-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .day-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'Kanit', sans-serif;
+    font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px; margin-top: 28px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    width: 3px; height: 14px;
+    border-radius: 2px;
+    background: var(--sky);
+  }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 8px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--sky), var(--border));
+    border-radius: 2px;
+  }
+  .event {
+    position: relative; margin-bottom: 14px;
+    animation: fadeUp 0.35s ease both;
+  }
+  .event:nth-child(1) { animation-delay: 0.04s; }
+  .event:nth-child(2) { animation-delay: 0.08s; }
+  .event:nth-child(3) { animation-delay: 0.12s; }
+  .event:nth-child(4) { animation-delay: 0.16s; }
+  .event:nth-child(5) { animation-delay: 0.20s; }
+  .event:nth-child(6) { animation-delay: 0.24s; }
+  .event:nth-child(7) { animation-delay: 0.28s; }
+  .event:nth-child(8) { animation-delay: 0.32s; }
+  .event:nth-child(9) { animation-delay: 0.36s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .event-dot {
+    position: absolute; left: -24px; top: 17px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2.5px solid var(--border2);
+    background: white;
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .event-dot.eat { border-color: var(--coral); }
+  .event-dot.hotel { border-color: var(--sunset); }
+  .event-dot.sight { border-color: var(--sky); }
+  .event-dot.market { border-color: #d97706; }
+  .event-dot.bar { border-color: var(--purple); }
+  .event-dot.cafe { border-color: #c2410c; }
+  .event-dot.temple { border-color: #db2777; }
+  .event-dot.boat { border-color: var(--sea); }
+
+  .event-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .event-card:hover {
+    border-color: var(--sky);
+    box-shadow: 0 4px 16px rgba(86,188,212,0.15);
+    transform: translateY(-1px);
+  }
+  .event-top {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; flex-wrap: wrap;
+  }
+  .event-time {
+    font-family: 'Kanit', sans-serif;
+    font-size: 12px; color: var(--sea);
+    background: var(--sky-light);
+    border-radius: 6px; padding: 2px 8px;
+    flex-shrink: 0; font-weight: 500;
+  }
+  .event-type-badge {
+    font-size: 11px; border-radius: 5px;
+    padding: 2px 8px; flex-shrink: 0;
+    font-weight: 500;
+  }
+  .badge-eat { background: var(--coral-light); color: var(--coral); }
+  .badge-hotel { background: var(--sunset-light); color: var(--sunset); }
+  .badge-sight { background: var(--sky-light); color: var(--ocean); }
+  .badge-market { background: var(--yellow-light); color: var(--yellow); }
+  .badge-bar { background: var(--purple-light); color: var(--purple); }
+  .badge-cafe { background: #fff7ed; color: #c2410c; }
+  .badge-temple { background: #fdf2f8; color: #db2777; }
+  .badge-boat { background: var(--sky-light); color: var(--sea); }
+
+  .event-name {
+    font-family: 'Kanit', sans-serif;
+    font-size: 15px; font-weight: 600;
+    margin-bottom: 3px; color: var(--text); line-height: 1.3;
+  }
+  .event-note {
+    font-size: 13px; color: var(--text2); line-height: 1.55;
+  }
+  .event-note .highlight { color: var(--coral); font-weight: 600; }
+  .event-note .warn { color: var(--yellow); font-weight: 600; }
+
+  /* FOOD OPTIONS */
+  .food-options {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 16px; margin-bottom: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .food-options-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 13px; color: var(--ocean);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px; font-weight: 600;
+  }
+  .food-list { display: flex; flex-direction: column; gap: 6px; }
+  .food-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1.5px solid transparent;
+  }
+  .food-item:hover { background: var(--sky-light); }
+  .food-item.selected {
+    background: var(--sky-light);
+    border-color: var(--sky);
+  }
+  .food-radio {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid var(--border2); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .food-item.selected .food-radio {
+    border-color: var(--sea); background: var(--sea);
+  }
+  .food-item.selected .food-radio::after {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: white;
+  }
+  .food-name { font-size: 14px; color: var(--text); flex: 1; font-weight: 500; }
+  .food-tag { font-size: 11px; color: var(--text3); }
+
+  /* TIPS BOX */
+  .tips-box {
+    background: linear-gradient(135deg, var(--sunset-light), #fff);
+    border: 1.5px solid #fde8c0;
+    border-radius: 16px; padding: 16px; margin-top: 20px;
+  }
+  .tips-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 13px; color: var(--sunset);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px; font-weight: 600;
+  }
+  .tip-item {
+    font-size: 13px; color: var(--text2);
+    padding: 5px 0 5px 18px; position: relative; line-height: 1.55;
+  }
+  .tip-item::before {
+    content: '→'; position: absolute; left: 0; color: var(--sunset); font-weight: 600;
+  }
+
+  /* BOAT INFO */
+  .boat-info {
+    background: var(--sky-light);
+    border: 1.5px solid var(--border2);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 4px;
+  }
+  .boat-stat {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text2);
+  }
+  .boat-stat-icon { font-size: 16px; }
+  .boat-stat-val { color: var(--ocean); font-weight: 600; }
+
+  /* SUMMARY GRID */
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 28px;
+  }
+  .summary-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 20px 12px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .summary-num {
+    font-family: 'Kanit', sans-serif;
+    font-size: 36px; font-weight: 700; color: var(--sea);
+    line-height: 1; margin-bottom: 6px;
+  }
+  .summary-label { font-size: 12px; color: var(--text3); font-weight: 500; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-deco">🌊🏖🛳</div>
+  <div class="hero-deco2">☀️</div>
+  <div class="hero-badge">✈ แผนเที่ยว 3 วัน 2 คืน</div>
+  <h1>บางแสน <span class="accent">·</span> เกาะสีชัง<br><span class="accent2">· ศรีราชา</span></h1>
+  <div class="hero-route">
+    <span>นครปฐม</span>
+    <div class="route-dot"></div>
+    <span>ชลบุรี</span>
+    <div class="route-dot"></div>
+    <span>ศรีราชา</span>
+  </div>
+  <div class="hero-pills">
+    <span class="pill">🏖 หาดบางแสน</span>
+    <span class="pill">🛳 เกาะสีชัง</span>
+    <span class="pill">☕ Little Town</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(0)"><span class="tab-num">6</span>บางแสน</div>
+  <div class="tab" onclick="switchTab(1)"><span class="tab-num">7</span>เกาะสีชัง</div>
+  <div class="tab" onclick="switchTab(2)"><span class="tab-num">8</span>ศรีราชา</div>
+</div>
+
+<div class="content">
+
+  <!-- DAY 1: บางแสน -->
+  <div class="day-section active" id="day0">
+    <div class="day-header">
+      <div class="day-icon d1">🏖</div>
+      <div>
+        <div class="day-title">บางแสน — วันแรก</div>
+        <div class="day-desc">ออกจากนครปฐมเกือบเที่ยง · เช็คอิน Redwood Inn · เดินตลาด · นั่งชิลยามค่ำ</div>
+      </div>
+    </div>
+
+    <div class="section-label">กินข้าวเที่ยง — เลือกร้าน</div>
+    <div class="food-options">
+      <div class="food-options-title">🍽 ตัวเลือกร้านอาหาร (แตะเพื่อเลือก)</div>
+      <div class="food-list">
+        <div class="food-item selected" onclick="selectFood(this)">
+          <div class="food-radio"></div>
+          <div class="food-name">ครัวริมหาด by ลุงด้วง</div>
+          <div class="food-tag">ติดทะเล · ซีฟู้ด</div>
+        </div>
+        <div class="food-item" onclick="selectFood(this)">
+          <div class="food-radio"></div>
+          <div class="food-name">เตี๋ยวเรือ ป.โท</div>
+          <div class="food-tag">เบาๆ · เตี๋ยว</div>
+        </div>
+        <div class="food-item" onclick="selectFood(this)">
+          <div class="food-radio"></div>
+          <div class="food-name">ร้านป้าจุกหาดวอน</div>
+          <div class="food-tag">อาหารทะเลสด</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Timeline</div>
+    <div class="timeline">
+      <div class="event">
+        <div class="event-dot"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~11:30</span><span class="event-type-badge badge-boat">🚗 เดินทาง</span></div>
+          <div class="event-name">ออกจากนครปฐม</div>
+          <div class="event-note">ระยะทาง ~90 กม. · ใช้เวลาประมาณ <span class="highlight">1.5 ชั่วโมง</span></div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot eat"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~13:00</span><span class="event-type-badge badge-eat">🍽 กินข้าว</span></div>
+          <div class="event-name">กินข้าวเที่ยงบางแสน</div>
+          <div class="event-note">ดูตัวเลือกด้านบน · แนะนำครัวริมหาดถ้าอยากกินซีฟู้ดสดๆ ริมทะเล</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot sight"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~14:00</span><span class="event-type-badge badge-sight">🐠 ท่องเที่ยว</span></div>
+          <div class="event-name">สถาบันวิทยาศาสตร์ทางทะเล</div>
+          <div class="event-note">เปิด 9:00–16:30 น. · ไทย <span class="highlight">80฿</span> ผู้ใหญ่ / 40฿ เด็ก · รับเงินสดเท่านั้น</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot hotel"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">15:00</span><span class="event-type-badge badge-hotel">🏨 เช็คอิน</span></div>
+          <div class="event-name">Redwood Inn ⭐ 4.7</div>
+          <div class="event-note">ที่จอดรถหน้าห้อง · ใกล้ตลาดปลา ~500 ม. · มีเงินมัดจำกุญแจ 500฿</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot market"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~17:30</span><span class="event-type-badge badge-market">🛒 ตลาด</span></div>
+          <div class="event-name">ตลาดวอนนภา</div>
+          <div class="event-note">⚠️ เปิดเฉพาะ <span class="highlight">จันทร์ & ศุกร์</span> เท่านั้น บ่าย–20:00 น.</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot bar"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~20:00</span><span class="event-type-badge badge-bar">🍸 นั่งชิล</span></div>
+          <div class="event-name">Never See Sunset ⭐ 4.7</div>
+          <div class="event-note">Rooftop bar · มีโซนดูหนัง & โต๊ะพูล · เปิด 17:00–เที่ยงคืน</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <div class="tips-title">💡 Tips วันที่ 6</div>
+      <div class="tip-item">ตลาดวอนนภาเปิดแค่จันทร์+ศุกร์ → เช็คให้แน่ว่าวันที่ 6 ตรงกับวันไหน</div>
+      <div class="tip-item">Never See Sunset เปิด 17:00 น. มีเวลาพักที่โรงแรมก่อนออกไปชิล</div>
+    </div>
+  </div>
+
+  <!-- DAY 2: เกาะสีชัง -->
+  <div class="day-section" id="day1">
+    <div class="day-header">
+      <div class="day-icon d2">🛳</div>
+      <div>
+        <div class="day-title">เกาะสีชัง — วันที่สอง</div>
+        <div class="day-desc">กินหมูปลาร้าเช้า · ข้ามเรือ 10 โมง · เที่ยวรอบเกาะ · เช็คอิน The Kite Hotel</div>
+      </div>
+    </div>
+
+    <div class="section-label">ข้อมูลเรือ</div>
+    <div class="boat-info">
+      <div class="boat-stat"><span class="boat-stat-icon">⛴</span><span>ค่าเรือ <span class="boat-stat-val">60฿/คน/เที่ยว</span></span></div>
+      <div class="boat-stat"><span class="boat-stat-icon">🕐</span><span>เดินทาง <span class="boat-stat-val">~45 นาที</span></span></div>
+      <div class="boat-stat"><span class="boat-stat-icon">🛵</span><span>เช่ามอเตอร์ไซค์ <span class="boat-stat-val">250฿/คัน</span></span></div>
+    </div>
+
+    <div class="section-label">Timeline</div>
+    <div class="timeline">
+      <div class="event">
+        <div class="event-dot eat"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~08:00</span><span class="event-type-badge badge-eat">🍽 กินข้าวเช้า</span></div>
+          <div class="event-name">หมูปลาร้าคลับ ⭐ 4.2</div>
+          <div class="event-note">หน้าหาดวอน · เปิดเช้า · ไปเช้าๆ คิวน้อยกว่า · เมนูแนะนำ <span class="highlight">หมูปลาร้าย่าง</span></div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot boat"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~09:00</span><span class="event-type-badge badge-boat">🚗 เดินทาง</span></div>
+          <div class="event-name">ขับไปท่าเรือเกาะลอย ศรีราชา</div>
+          <div class="event-note">ระยะทาง ~45 กม. · เผื่อเวลาถึงท่าก่อน 10 โมง</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot boat"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">10:00</span><span class="event-type-badge badge-boat">🛳 เรือ</span></div>
+          <div class="event-name">ท่าเรือเกาะลอย → เกาะสีชัง</div>
+          <div class="event-note">ขึ้นเรือ 60฿/คน · ถึงเกาะ ~10:45 · เช่ามอเตอร์ไซค์ที่ท่า 250฿/คัน (เต็มถัง)</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot temple"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~11:00</span><span class="event-type-badge badge-temple">⛩ ศาลเจ้า</span></div>
+          <div class="event-name">ศาลเจ้าพ่อเขาใหญ่ ⭐ 4.4</div>
+          <div class="event-note">เปิด 08:00–20:00 · วิวทะเลสวยมาก · ขับมอเตอร์ไซค์ขึ้นได้หรือเดินบันได</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot eat"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~12:30</span><span class="event-type-badge badge-eat">🍽 กินข้าว</span></div>
+          <div class="event-name">ร้านป้าปั่น ลุงวิศ</div>
+          <div class="event-note">ข้าวกลางวันบนเกาะ · ของสดจากทะเล</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot sight"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~13:30</span><span class="event-type-badge badge-sight">📸 วิวพอยท์</span></div>
+          <div class="event-name">ช่องเขาขาด ⭐ 4.5</div>
+          <div class="event-note">วิวแหลมชายฝั่งสวย · เหมาะถ่ายรูปมาก · <span class="warn">⚠️ แดดจัด เตรียมครีมกันแดด</span></div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot sight"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~14:30</span><span class="event-type-badge badge-sight">📸 Unseen</span></div>
+          <div class="event-name">แหลมถ้ำพัง (ถ้ำทะลุ) ⭐ 4.6</div>
+          <div class="event-note">จุด Unseen สุดฮิต · วันธรรมดาคนน้อยกว่า · เสาร์-อาทิตย์ต้องรอคิวถ่ายรูป</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot cafe"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~15:30</span><span class="event-type-badge badge-cafe">☕ คาเฟ่</span></div>
+          <div class="event-name">Euro Cafe Sichang ⭐ 5.0 🏆</div>
+          <div class="event-note">กาแฟ <span class="highlight">40฿</span> · เจ้าของใจดีมาก · เปิด 7:30–16:00 (จ–ศ) / 18:00 (ส–อ)</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot hotel"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~17:30</span><span class="event-type-badge badge-hotel">🏨 เช็คอิน</span></div>
+          <div class="event-name">The Kite Hotel Bangsaen ⭐ 4.6</div>
+          <div class="event-note">นั่งเรือกลับ → ขับต่อมาบางแสน · ห้องสะอาด แรงดันน้ำดีมาก ใกล้ชายหาด</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <div class="tips-title">💡 Tips วันที่ 7</div>
+      <div class="tip-item">ไปหมูปลาร้าเช้าๆ ดีกว่า คิวน้อยกว่าช่วงสาย ถ้าช้าอาจรอ 30–40 นาที</div>
+      <div class="tip-item">Euro Cafe ปิด 16:00 วันธรรมดา ถ้าไปช้ากว่านั้นอาจปิดแล้ว</div>
+      <div class="tip-item">เกาะสีชังเล็กมาก รอบเกาะใช้เวลาขับมอเตอร์ไซค์ไม่เกิน 30 นาที</div>
+    </div>
+  </div>
+
+  <!-- DAY 3: ศรีราชา -->
+  <div class="day-section" id="day2">
+    <div class="day-header">
+      <div class="day-icon d3">🌅</div>
+      <div>
+        <div class="day-title">ศรีราชา — วันสุดท้าย</div>
+        <div class="day-desc">เช็คเอาต์ The Kite Hotel · กินข้าว · แวะ Little Town Sriracha ก่อนกลับบ้าน</div>
+      </div>
+    </div>
+
+    <div class="section-label">Timeline</div>
+    <div class="timeline">
+      <div class="event">
+        <div class="event-dot hotel"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~08:00</span><span class="event-type-badge badge-hotel">🏨 เช็คเอาต์</span></div>
+          <div class="event-name">เช็คเอาต์ The Kite Hotel</div>
+          <div class="event-note">เก็บของ · เตรียมพร้อมก่อนออกเดินทาง</div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot eat"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~08:30</span><span class="event-type-badge badge-eat">🍽 กินข้าว</span></div>
+          <div class="event-name">ครัวริมหาด by ลุงด้วง ⭐ 4.4</div>
+          <div class="event-note">อาหารทะเลสดริมทะเล · แนะนำกุ้งแมงดาทอดกระเทียม & ซุปหมึกดำ · <span class="warn">ปิดวันอังคาร</span></div>
+        </div>
+      </div>
+      <div class="event">
+        <div class="event-dot cafe"></div>
+        <div class="event-card">
+          <div class="event-top"><span class="event-time">~10:30</span><span class="event-type-badge badge-cafe">☕ คาเฟ่</span></div>
+          <div class="event-name">Little Town Sriracha ⭐ 4.4</div>
+          <div class="event-note">คาเฟ่วิวอ่าวหอยแมลงภู่ · บรรยากาศน่ารัก · เปิด 10:00 น. · <span class="highlight">⚠️ ปิดวันจันทร์</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">ตัวเลือกร้านกินข้าว</div>
+    <div class="food-options">
+      <div class="food-options-title">🍽 ค่อยตัดสินใจวันนั้น (แตะเพื่อมาร์ก)</div>
+      <div class="food-list">
+        <div class="food-item selected" onclick="selectFood(this)">
+          <div class="food-radio"></div>
+          <div class="food-name">ครัวริมหาด</div>
+          <div class="food-tag">ซีฟู้ดริมทะเล · ปิดอังคาร</div>
+        </div>
+        <div class="food-item" onclick="selectFood(this)">
+          <div class="food-radio"></div>
+          <div class="food-name">เตี๋ยวเรือ ป.โท</div>
+          <div class="food-tag">เบาๆ เช้าๆ</div>
+        </div>
+        <div class="food-item" onclick="selectFood(this)">
+          <div class="food-radio"></div>
+          <div class="food-name">ร้านป้าจุกหาดวอน</div>
+          <div class="food-tag">อาหารทะเล</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-box">
+      <div class="tips-title">💡 Tips วันที่ 8</div>
+      <div class="tip-item">Little Town เปิด 10:00 น. ถ้าออกจากโรงแรมเช้า อาจต้องรอนิดหน่อย</div>
+      <div class="tip-item">ถนนจาก Little Town กลับนครปฐม ~90 กม. ใช้เวลาประมาณ 1.5 ชม.</div>
+    </div>
+
+    <div class="section-label" style="margin-top: 36px">สรุปทริป</div>
+    <div class="summary-grid">
+      <div class="summary-card"><div class="summary-num">3</div><div class="summary-label">วัน / 2 คืน</div></div>
+      <div class="summary-card"><div class="summary-num">2</div><div class="summary-label">โรงแรม</div></div>
+      <div class="summary-card"><div class="summary-num">1</div><div class="summary-label">เกาะ</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(index) {
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === index));
+    document.querySelectorAll('.day-section').forEach((s, i) => s.classList.toggle('active', i === index));
+  }
+  function selectFood(el) {
+    el.closest('.food-list').querySelectorAll('.food-item').forEach(item => item.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>
