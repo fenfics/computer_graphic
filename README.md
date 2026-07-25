@@ -8,7 +8,6 @@ This repository contains laboratory exercises, workshops, and course projects co
 computer_graphic
 ├── Christmas_proj
 ├── GPU_Mesh
-├── NewYears_Proj
 ├── PBR-AHM
 ├── Portfolio_Project
 ├── Trip_Bangsean
@@ -36,7 +35,6 @@ computer_graphic
 |---------|-------------|
 | Portfolio_Project | Interactive personal portfolio with 3D graphics |
 | Christmas_proj | Christmas-themed interactive graphics project |
-| NewYears_Proj | New Year web graphics project |
 | Trip_Bangsean | Interactive travel-themed graphics application |
 | GPU_Mesh | Mesh rendering and GPU graphics exercises |
 | PBR-AHM | Physically Based Rendering (PBR) demonstration |
